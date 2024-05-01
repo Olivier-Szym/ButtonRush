@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/group_menu_pseudo"
+        android:visible="false">
+
+<!--        <item-->
+<!--            android:id="@+id/icon_user"-->
+<!--            app:showAsAction="always|withText"-->
+<!--            android:title="test"-->
+<!--            android:icon="@drawable/person_fill0_wght400_grad0_opsz24" />-->
+
+<!--        <item-->
+<!--            android:id="@+id/pseudo_visible"-->
+<!--            app:showAsAction="always|withText"-->
+<!--            android:title="user"-->
+<!--            android:icon="@drawable/person_fill0_wght400_grad0_opsz24"-->
+<!--            app:actionViewClass="com.zimoliv.buttonrush.CustomActionView" />-->
+
+        <item
+            android:id="@+id/pseudo_visible"
+            android:title="user1"
+            app:showAsAction="always"
+            app:actionLayout="@layout/custom_action_view" />
+
+    </group>
+
+</menu>

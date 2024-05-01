@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "285398701224",
+    "firebase_url": "https://database-c6332-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "database-c6332",
+    "storage_bucket": "database-c6332.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285398701224:android:2f0418561ea6d1825e9e9d",
+        "android_client_info": {
+          "package_name": "com.zimoliv.buttonrush"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_aQt08eJhAXbsuvn9jUzYTA4K52hafMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
