@@ -14,7 +14,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
-import android.widget.*
+import android.widget.Button
+import android.widget.RadioGroup
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -492,11 +496,43 @@ class HomeFragment : Fragment(), PauseDialogListener {
 
             fadeOutAnimation.start()
         } else {
-
+            binding.buttonClick.isEnabled = false
             val createUserFragment = PseudoDialog(requireContext())
             createUserFragment.isCancelable = false
             createUserFragment.listener = object: PseudoDialog.CreateUserDialogListener {
+                @SuppressLint("ClickableViewAccessibility")
                 override fun onDialogPositiveClick(pseudo: String) {
+                    binding.buttonClick.isEnabled = true
+                    binding.buttonClick.setOnTouchListener { _, event ->
+                        when (event.actionMasked) {
+                            MotionEvent.ACTION_DOWN -> {
+                                vibratePhone(50)
+                                // Lorsqu'un doigt touche le bouton
+                                // Votre logique ici
+                                true // Indiquer que l'événement est consommé
+                            }
+                            MotionEvent.ACTION_POINTER_DOWN -> {
+                                when (event.pointerCount) {
+                                    2 -> {
+                                        vibratePhone(50)
+                                        // Lorsqu'un deuxième doigt touche le bouton
+                                        // Votre logique ici pour deux doigts
+                                        true // Indiquer que l'événement est consommé
+                                    }
+                                    3 -> {
+                                        vibratePhone(50)
+                                        // Lorsqu'un troisième doigt touche le bouton
+                                        // Votre logique ici pour trois doigts
+                                        true // Indiquer que l'événement est consommé
+                                    }
+                                    else -> {
+                                        false // Indiquer que l'événement n'est pas consommé pour d'autres actions
+                                    }
+                                }
+                            }
+                            else -> false // Indiquer que l'événement n'est pas consommé pour d'autres actions
+                        }
+                    }
                     (activity as MainActivity2).setSaveName(pseudo)
                     saveRecord(goal)
                     val database = Firebase.database

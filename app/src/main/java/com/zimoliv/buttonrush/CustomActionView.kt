@@ -31,10 +31,6 @@ class CustomActionView : LinearLayout, MenuItemCompat.OnActionExpandListener {
         titleTextView = findViewById(R.id.title)
     }
 
-//    fun setIcon(iconResId: Int) {
-//        iconImageView.setImageResource(iconResId)
-//    }
-
     fun setTitle(title: String) {
         titleTextView.text = title
     }

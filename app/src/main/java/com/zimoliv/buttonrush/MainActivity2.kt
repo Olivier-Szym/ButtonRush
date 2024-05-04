@@ -71,10 +71,9 @@ class MainActivity2 : AppCompatActivity() {
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
-
                         val record100 = getRecord100()
                         if ((dataSnapshot.child("100click").getValue(Int::class.java)?.toLong()
-                                ?: 0) > record100
+                                ?: (record100 + 1)) > record100
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
                                 put("100click", record100)
@@ -84,7 +83,7 @@ class MainActivity2 : AppCompatActivity() {
 
                         val record500 = getRecord500()
                         if ((dataSnapshot.child("500click").getValue(Int::class.java)?.toLong()
-                                ?: 0) > record500
+                                ?: (record100 + 1)) > record500
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
                                 put("500click", record500)
@@ -94,7 +93,7 @@ class MainActivity2 : AppCompatActivity() {
 
                         val record1k = getRecord1k()
                         if ((dataSnapshot.child("1kclick").getValue(Int::class.java)?.toLong()
-                                ?: 0) > record1k
+                                ?: (record1k + 1)) > record1k
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
                                 put("1kclick", record1k)
@@ -104,7 +103,7 @@ class MainActivity2 : AppCompatActivity() {
 
                         val record10k = getRecord10k()
                         if ((dataSnapshot.child("10kclick").getValue(Int::class.java)?.toLong()
-                                ?: 0) > record10k
+                                ?: (record10k + 1)) > record10k
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
                                 put("10kclick", record10k)
@@ -114,7 +113,7 @@ class MainActivity2 : AppCompatActivity() {
 
                         val recordMarathon = getRecordMarathon()
                         if ((dataSnapshot.child("marathon").getValue(Int::class.java)?.toLong()
-                                ?: 0) > recordMarathon
+                                ?: (recordMarathon + 1)) > recordMarathon
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
                                 put("marathon", recordMarathon)

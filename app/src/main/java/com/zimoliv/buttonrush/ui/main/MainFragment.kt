@@ -41,6 +41,8 @@ import com.zimoliv.buttonrush.ui.ranked.UserItem
 
 class MainFragment : Fragment() {
 
+
+    private val handler2 = Handler()
     private var clickCount = 0
     private val handler = Handler(Looper.getMainLooper())
     private var listUser: MutableList<UserItem> = mutableListOf()
@@ -433,7 +435,9 @@ class MainFragment : Fragment() {
             }
         }
 
-        startCPSCheck()
+//        startCPSCheck()
+        handler.removeCallbacksAndMessages(null)
+        startPeriodicTask()
 
         binding.trophyButton.setOnClickListener {
 
@@ -563,53 +567,95 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun startCPSCheck() {
-        handler.postDelayed({
+    private fun startPeriodicTask() {
+        handler2.post(object : Runnable {
+            override fun run() {
+                val cps = clickCount
+                clickCount = 0
+                binding.numberClickSeconde.text = cps.toString()
 
-            val cps = clickCount
-            clickCount = 0
-            binding.numberClickSeconde.text = cps.toString()
-
-            if (cps > 14) {
-//                binding.verticalProgressbar.secondaryProgress  = cps
-                animateProgressBar(lastValue, cps, 500, true)
-                binding.verticalProgressbar.progress = 0
-            } else {
-//                binding.verticalProgressbar.progress = cps
-                animateProgressBar(lastValue, cps, 500, false)
-                binding.verticalProgressbar.secondaryProgress  = 0
-            }
-
-            try {
-                if (viewModel.number.value!! in 1001..2499) {
-                    if (cps < 4) {
-
-                        val color = ContextCompat.getColor(requireContext(), R.color.yellow)
-                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-                    } else if (cps < 8) {
-
-                        val color = ContextCompat.getColor(requireContext(), R.color.orange)
-                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-                    }  else if (cps < 12) {
-
-                        val color = ContextCompat.getColor(requireContext(), R.color.red_orange)
-                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-                    } else {
-
-                        val color = ContextCompat.getColor(requireContext(), R.color.red)
-                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-                    }
+                if (cps > 14) {
+                    animateProgressBar(lastValue, cps, 500, true)
+                    binding.verticalProgressbar.progress = 0
                 } else {
-                    val transparentColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
-                    binding.buttonId.setColorFilter(transparentColor, PorterDuff.Mode.SRC_ATOP)
-
+                    animateProgressBar(lastValue, cps, 500, false)
+                    binding.verticalProgressbar.secondaryProgress  = 0
                 }
-            } catch (_: Exception) {  }
 
-            lastValue = cps
-            startCPSCheck()
-        }, 1000)
+                try {
+                    if (viewModel.number.value!! in 1001..2499) {
+                        if (cps < 4) {
+                            val color = ContextCompat.getColor(requireContext(), R.color.yellow)
+                            binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                        } else if (cps < 8) {
+                            val color = ContextCompat.getColor(requireContext(), R.color.orange)
+                            binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                        }  else if (cps < 12) {
+                            val color = ContextCompat.getColor(requireContext(), R.color.red_orange)
+                            binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                        } else {
+                            val color = ContextCompat.getColor(requireContext(), R.color.red)
+                            binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                        }
+                    } else {
+                        val transparentColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
+                        binding.buttonId.setColorFilter(transparentColor, PorterDuff.Mode.SRC_ATOP)
+                    }
+                } catch (_: Exception) {  }
+
+                lastValue = cps
+                handler.postDelayed(this, 1000)
+            }
+        })
     }
+
+//    private fun startCPSCheck() {
+//        handler.postDelayed({
+//
+//            val cps = clickCount
+//            clickCount = 0
+//            binding.numberClickSeconde.text = cps.toString()
+//
+//            if (cps > 14) {
+////                binding.verticalProgressbar.secondaryProgress  = cps
+//                animateProgressBar(lastValue, cps, 500, true)
+//                binding.verticalProgressbar.progress = 0
+//            } else {
+////                binding.verticalProgressbar.progress = cps
+//                animateProgressBar(lastValue, cps, 500, false)
+//                binding.verticalProgressbar.secondaryProgress  = 0
+//            }
+//
+//            try {
+//                if (viewModel.number.value!! in 1001..2499) {
+//                    if (cps < 4) {
+//
+//                        val color = ContextCompat.getColor(requireContext(), R.color.yellow)
+//                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+//                    } else if (cps < 8) {
+//
+//                        val color = ContextCompat.getColor(requireContext(), R.color.orange)
+//                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+//                    }  else if (cps < 12) {
+//
+//                        val color = ContextCompat.getColor(requireContext(), R.color.red_orange)
+//                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+//                    } else {
+//
+//                        val color = ContextCompat.getColor(requireContext(), R.color.red)
+//                        binding.buttonId.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+//                    }
+//                } else {
+//                    val transparentColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
+//                    binding.buttonId.setColorFilter(transparentColor, PorterDuff.Mode.SRC_ATOP)
+//
+//                }
+//            } catch (_: Exception) {  }
+//
+//            lastValue = cps
+//            startCPSCheck()
+//        }, 1000)
+//    }
 
     private fun animateProgressBar(startProgress: Int, endProgress: Int, duration: Long, secondary: Boolean) {
         val progressBar = binding.verticalProgressbar

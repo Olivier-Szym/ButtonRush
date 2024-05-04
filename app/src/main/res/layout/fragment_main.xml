@@ -24,45 +24,6 @@
             android:visibility="gone"
             tools:visibility="visible"/>
 
-<!--        <com.google.android.material.circularreveal.cardview.CircularRevealCardView-->
-<!--            android:id="@+id/name_constraint"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_margin="5dp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            android:visibility="gone"-->
-<!--            tools:visibility="visible">-->
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:id="@+id/constraint_name"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="2dp">-->
-
-<!--                <com.google.android.material.circularreveal.cardview.CircularRevealCardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/name_text"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:background="@color/orange_800"-->
-<!--                        android:ellipsize="end"-->
-<!--                        android:maxEms="5"-->
-<!--                        android:maxLines="1"-->
-<!--                        android:padding="8dp"-->
-<!--                        android:textSize="20sp"-->
-<!--                        tools:text="Zimolivyyzayr" />-->
-
-<!--                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>-->
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>-->
-
 
         <TextView
             android:id="@+id/message"
