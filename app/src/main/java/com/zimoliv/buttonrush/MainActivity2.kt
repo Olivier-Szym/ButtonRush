@@ -72,51 +72,49 @@ class MainActivity2 : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         val record100 = getRecord100()
-                        if ((dataSnapshot.child("100click").getValue(Int::class.java)?.toLong()
-                                ?: (record100 + 1)) > record100
-                        ) {
+                        if ((dataSnapshot.child(getString(R.string.cent_id) ).getValue(Int::class.java)?.toLong() ?: (record100 + 1)) > record100 && record100 > 0) {
                             val utilisateurData = HashMap<String, Any>().apply {
-                                put("100click", record100)
+                                put(getString(R.string.cent_id) , record100)
                             }
                             myRef.updateChildren(utilisateurData)
                         }
 
                         val record500 = getRecord500()
-                        if ((dataSnapshot.child("500click").getValue(Int::class.java)?.toLong()
-                                ?: (record100 + 1)) > record500
+                        if ((dataSnapshot.child(getString(R.string.cinq_id)).getValue(Int::class.java)?.toLong()
+                                ?: (record500 + 1)) > record500 && record500 > 0
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
-                                put("500click", record500)
+                                put(getString(R.string.cinq_id), record500)
                             }
                             myRef.updateChildren(utilisateurData)
                         }
 
                         val record1k = getRecord1k()
-                        if ((dataSnapshot.child("1kclick").getValue(Int::class.java)?.toLong()
-                                ?: (record1k + 1)) > record1k
+                        if ((dataSnapshot.child(getString(R.string.k_id)).getValue(Int::class.java)?.toLong()
+                                ?: (record1k + 1)) > record1k && record1k > 0
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
-                                put("1kclick", record1k)
+                                put(getString(R.string.k_id), record1k)
                             }
                             myRef.updateChildren(utilisateurData)
                         }
 
                         val record10k = getRecord10k()
-                        if ((dataSnapshot.child("10kclick").getValue(Int::class.java)?.toLong()
-                                ?: (record10k + 1)) > record10k
+                        if ((dataSnapshot.child(getString(R.string.dix_id)).getValue(Int::class.java)?.toLong()
+                                ?: (record10k + 1)) > record10k && record10k > 0
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
-                                put("10kclick", record10k)
+                                put(getString(R.string.dix_id), record10k)
                             }
                             myRef.updateChildren(utilisateurData)
                         }
 
                         val recordMarathon = getRecordMarathon()
-                        if ((dataSnapshot.child("marathon").getValue(Int::class.java)?.toLong()
-                                ?: (recordMarathon + 1)) > recordMarathon
+                        if ((dataSnapshot.child(getString(R.string.marath_id)).getValue(Int::class.java)?.toLong()
+                                ?: (recordMarathon + 1)) > recordMarathon && recordMarathon > 0
                         ) {
                             val utilisateurData = HashMap<String, Any>().apply {
-                                put("marathon", recordMarathon)
+                                put(getString(R.string.marath_id), recordMarathon)
                             }
                             myRef.updateChildren(utilisateurData)
                         }

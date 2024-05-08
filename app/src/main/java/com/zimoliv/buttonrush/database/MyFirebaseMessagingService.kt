@@ -1,4 +1,4 @@
-package com.zimoliv.buttonrush
+package com.zimoliv.buttonrush.database
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -15,6 +15,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.zimoliv.buttonrush.MainActivity2
+import com.zimoliv.buttonrush.R
 
 const val channelId = "notification_channel"
 const val channelName = "com.zimoliv.buttonrush"

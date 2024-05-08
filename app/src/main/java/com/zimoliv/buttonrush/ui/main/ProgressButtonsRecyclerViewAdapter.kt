@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zimoliv.buttonrush.R
+import com.zimoliv.buttonrush.database.data.MutableInt
 
 class ProgressButtonsRecyclerViewAdapter(private val number: MutableInt, private val context2: Context): RecyclerView.Adapter<ProgressButtonsRecyclerViewAdapter.ViewHolder>() {
 

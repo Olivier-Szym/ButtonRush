@@ -24,13 +24,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.zimoliv.buttonrush.CustomActionView
+import com.zimoliv.buttonrush.domain.CustomActionView
 import com.zimoliv.buttonrush.MainActivity2
-import com.zimoliv.buttonrush.PseudoDialog
+import com.zimoliv.buttonrush.domain.dialog.PseudoDialog
 import com.zimoliv.buttonrush.R
 import com.zimoliv.buttonrush.databinding.FragmentHomeBinding
+import com.zimoliv.buttonrush.domain.dialog.BravoDialog
 
 
 class HomeFragment : Fragment(), PauseDialogListener {
@@ -205,24 +209,24 @@ class HomeFragment : Fragment(), PauseDialogListener {
 
                 val idTest = when (selectedRadioButtonId) {
                     R.id.radioButton1 -> {
-                        "100click"
+                        getString(R.string.cent_id)
                     }
                     R.id.radioButton2 -> {
-                        "500click"
+                        getString(R.string.cinq_id)
                     }
                     R.id.radioButton3 -> {
-                        "1kclick"
+                        getString(R.string.k_id)
                     }
                     R.id.radioButton4 -> {
-                        "10kclick"
+                        getString(R.string.dix_id)
                     }
                     R.id.radioButton5 -> {
-                        "marathon"
+                        getString(R.string.marath_id)
                     }
-                    else -> {"career"}
+                    else -> {getString(R.string.career_id)}
                 }
                 val bundle = Bundle()
-                bundle.putString("string1", idTest)
+                bundle.putString("string1", idTest.toString())
                 findNavController().navigate(R.id.action_navigation_home_to_itemFragment, bundle)
             }
         }
@@ -415,7 +419,8 @@ class HomeFragment : Fragment(), PauseDialogListener {
     private fun finishPlay(goal: Int, time: Long) {
 
         val lastRecord = (activity as MainActivity2).findRecords(goal)
-        var bool = lastRecord > elapsedTime
+//        println(lastRecord)
+        var bool = lastRecord > time
 
         val txt: String
         var recordOne : Long = -1
@@ -433,34 +438,103 @@ class HomeFragment : Fragment(), PauseDialogListener {
             recordOne = lastRecord
         }
 
+        saveRecord(goal)
         val surname = (activity as MainActivity2).getSaveName()
 
         if (surname != "User") {
             if (bool) {
-                saveRecord(goal)
-
+//                saveRecord(goal)
                 val database = Firebase.database
                 val myRef = database.getReference("utilisateurs")
-                val utilisateurData = HashMap<String, Any>().apply {
-                    when (goal) {
-                        100 -> {
-                            put("100click", time)
+                myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val utilisateurData = HashMap<String, Any>().apply {
+                            when (goal) {
+                                100 -> {
+                                    for (userSnapshot in dataSnapshot.children) {
+                                        val pseudo = userSnapshot.key ?: ""
+                                        val score = userSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java) ?: 0
+                                        if (pseudo != surname) {
+                                            if (time < score && score < lastRecord) {
+                                                val updates = HashMap<String, Any>()
+                                                updates.put("${getString(R.string.cent_id)}_trending", -1)
+                                                myRef.child(pseudo).updateChildren(updates)
+                                            }
+                                        }
+                                    }
+                                    put("${getString(R.string.cent_id)}_trending", 1)
+                                    put(getString(R.string.cent_id) , time)
+                                }
+                                500 -> {
+                                    for (userSnapshot in dataSnapshot.children) {
+                                        val pseudo = userSnapshot.key ?: ""
+                                        val score = userSnapshot.child(getString(R.string.cinq_id)).getValue(Int::class.java) ?: 0
+                                        if (pseudo != surname) {
+                                            if (time < score && score < lastRecord) {
+                                                val updates = HashMap<String, Any>()
+                                                updates.put("${getString(R.string.cinq_id)}_trending", -1)
+                                                myRef.child(pseudo).updateChildren(updates)
+                                            }
+                                        }
+                                    }
+                                    put("${getString(R.string.cinq_id)}_trending", 1)
+                                    put(getString(R.string.cinq_id), time)
+                                }
+                                1000 -> {
+                                    for (userSnapshot in dataSnapshot.children) {
+                                        val pseudo = userSnapshot.key ?: ""
+                                        val score = userSnapshot.child(getString(R.string.k_id)).getValue(Int::class.java) ?: 0
+                                        if (pseudo != surname) {
+                                            if (time < score && score < lastRecord) {
+                                                val updates = HashMap<String, Any>()
+                                                updates.put("${getString(R.string.k_id)}_trending", -1)
+                                                myRef.child(pseudo).updateChildren(updates)
+                                            }
+                                        }
+                                    }
+                                    put("${getString(R.string.k_id)}_trending", 1)
+                                    put(getString(R.string.k_id), time)
+                                }
+                                10000 -> {
+                                    for (userSnapshot in dataSnapshot.children) {
+                                        val pseudo = userSnapshot.key ?: ""
+                                        val score = userSnapshot.child(getString(R.string.dix_id)).getValue(Int::class.java) ?: 0
+                                        if (pseudo != surname) {
+                                            if (time < score && score < lastRecord) {
+                                                val updates = HashMap<String, Any>()
+                                                updates.put("${getString(R.string.dix_id)}_trending", -1)
+                                                myRef.child(pseudo).updateChildren(updates)
+                                            }
+                                        }
+                                    }
+                                    put("${getString(R.string.dix_id)}_trending", 1)
+                                    put(getString(R.string.dix_id), time)
+                                }
+                                42000 -> {
+                                    for (userSnapshot in dataSnapshot.children) {
+                                        val pseudo = userSnapshot.key ?: ""
+                                        val score = userSnapshot.child(getString(R.string.marath_id)).getValue(Int::class.java) ?: 0
+                                        if (pseudo != surname) {
+                                            if (time < score && score < lastRecord) {
+                                                val updates = HashMap<String, Any>()
+                                                updates.put("${getString(R.string.marath_id)}_trending", -1)
+                                                myRef.child(pseudo).updateChildren(updates)
+                                            }
+                                        }
+                                    }
+                                    put("${getString(R.string.marath_id)}_trending", 1)
+                                    put(getString(R.string.marath_id), time)
+                                }
+                            }
                         }
-                        500 -> {
-                            put("500click", time)
-                        }
-                        1000 -> {
-                            put("1kclick", time)
-                        }
-                        10000 -> {
-                            put("10kclick", time)
-                        }
-                        42000 -> {
-                            put("marathon", time)
-                        }
+                        myRef.child(surname).updateChildren(utilisateurData)
                     }
-                }
-                myRef.child(surname).updateChildren(utilisateurData)
+
+                    override fun onCancelled(error: DatabaseError) {
+                        //TODO("Not yet implemented")
+                    }
+
+                })
             }
 
             val bravoDialog = BravoDialog(requireContext(), txt, surname, bool, recordOne, elapsedTime)
@@ -534,29 +608,88 @@ class HomeFragment : Fragment(), PauseDialogListener {
                         }
                     }
                     (activity as MainActivity2).setSaveName(pseudo)
-                    saveRecord(goal)
+//                    saveRecord(goal)
                     val database = Firebase.database
                     val myRef = database.getReference("utilisateurs")
-                    val utilisateurData = HashMap<String, Any>().apply {
-                        when (goal) {
-                            100 -> {
-                                put("100click", time)
+//                    myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val utilisateurData = HashMap<String, Any>().apply {
+                                when (goal) {
+                                    100 -> {
+//                                        for (userSnapshot in dataSnapshot.children) {
+//                                            val pseudo = userSnapshot.key ?: ""
+//                                            val score = userSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java) ?: 0
+//                                            if (time < score && score < lastRecord) {
+//                                                val updates = HashMap<String, Any>()
+//                                                updates.put("${getString(R.string.cent_id)}_trending", -1)
+//                                                myRef.child(pseudo).updateChildren(updates)
+//                                            }
+//                                        }
+                                        put("${getString(R.string.cent_id)}_trending", 1)
+                                        put(getString(R.string.cent_id) , time)
+                                    }
+                                    500 -> {
+//                                        for (userSnapshot in dataSnapshot.children) {
+//                                            val pseudo = userSnapshot.key ?: ""
+//                                            val score = userSnapshot.child(getString(R.string.cinq_id)).getValue(Int::class.java) ?: 0
+//                                            if (time < score && score < lastRecord) {
+//                                                val updates = HashMap<String, Any>()
+//                                                updates.put("${getString(R.string.cinq_id)}_trending", -1)
+//                                                myRef.child(pseudo).updateChildren(updates)
+//                                            }
+//                                        }
+                                        put("${getString(R.string.cinq_id)}_trending", 1)
+                                        put(getString(R.string.cinq_id), time)
+                                    }
+                                    1000 -> {
+//                                        for (userSnapshot in dataSnapshot.children) {
+//                                            val pseudo = userSnapshot.key ?: ""
+//                                            val score = userSnapshot.child(getString(R.string.k_id)).getValue(Int::class.java) ?: 0
+//                                            if (time < score && score < lastRecord) {
+//                                                val updates = HashMap<String, Any>()
+//                                                updates.put("${getString(R.string.k_id)}_trending", -1)
+//                                                myRef.child(pseudo).updateChildren(updates)
+//                                            }
+//                                        }
+                                        put("${getString(R.string.k_id)}_trending", 1)
+                                        put(getString(R.string.k_id), time)
+                                    }
+                                    10000 -> {
+//                                        for (userSnapshot in dataSnapshot.children) {
+//                                            val pseudo = userSnapshot.key ?: ""
+//                                            val score = userSnapshot.child(getString(R.string.dix_id)).getValue(Int::class.java) ?: 0
+//                                            if (time < score && score < lastRecord) {
+//                                                val updates = HashMap<String, Any>()
+//                                                updates.put("${getString(R.string.dix_id)}_trending", -1)
+//                                                myRef.child(pseudo).updateChildren(updates)
+//                                            }
+//                                        }
+                                        put("${getString(R.string.dix_id)}_trending", 1)
+                                        put(getString(R.string.dix_id), time)
+                                    }
+                                    42000 -> {
+//                                        for (userSnapshot in dataSnapshot.children) {
+//                                            val pseudo = userSnapshot.key ?: ""
+//                                            val score = userSnapshot.child(getString(R.string.marath_id)).getValue(Int::class.java) ?: 0
+//                                            if (time < score && score < lastRecord) {
+//                                                val updates = HashMap<String, Any>()
+//                                                updates.put("${getString(R.string.marath_id)}_trending", -1)
+//                                                myRef.child(pseudo).updateChildren(updates)
+//                                            }
+//                                        }
+                                        put("${getString(R.string.marath_id)}_trending", 1)
+                                        put(getString(R.string.marath_id), time)
+                                    }
+                                }
                             }
-                            500 -> {
-                                put("500click", time)
-                            }
-                            1000 -> {
-                                put("1kclick", time)
-                            }
-                            10000 -> {
-                                put("10kclick", time)
-                            }
-                            42000 -> {
-                                put("marathon", time)
-                            }
-                        }
-                    }
-                    myRef.child(pseudo).updateChildren(utilisateurData)
+                            myRef.child(pseudo).updateChildren(utilisateurData)
+//                        }
+//
+//                        override fun onCancelled(error: DatabaseError) {
+//                            //TODO("Not yet implemented")
+//                        }
+//
+//                    })
                     val bravoDialog = BravoDialog(requireContext(), txt, pseudo, bool, recordOne, timeValue)
                     contain2.setOnClickListener { }
                     countdownTextView.text = ""

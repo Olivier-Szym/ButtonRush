@@ -1,4 +1,4 @@
-package com.zimoliv.buttonrush.ui.home
+package com.zimoliv.buttonrush.domain.dialog
 
 import android.content.Context
 import android.view.LayoutInflater

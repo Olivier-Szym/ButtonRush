@@ -1,21 +1,29 @@
 package com.zimoliv.buttonrush.ui.ranked
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.zimoliv.buttonrush.LeaderboardManager
+import com.google.firebase.database.ValueEventListener
 import com.zimoliv.buttonrush.MainActivity2
 import com.zimoliv.buttonrush.R
 import com.zimoliv.buttonrush.databinding.FragmentItemListBinding
 
 class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
 
-    private var idMode = "career"
+    private var onTime = false
+    private var idMode = "career"//getString(R.string.career_id)
     private lateinit var listUser: MutableList<UserItem>
     private lateinit var listFriends: MutableList<String>
     private var surname = ""
@@ -40,7 +48,7 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
         setHasOptionsMenu(true)
 
         arguments?.let {
-            idMode = it.getString("string1") ?: "career"
+            idMode = it.getString("string1") ?: getString(R.string.career_id)
         }
 
     }
@@ -76,7 +84,7 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
         listFriends.clear()
         listFriends.addAll(listRaw)
 
-        career = idMode == "career"
+        career = idMode == getString(R.string.career_id)
 
         adapter = MyItemRecyclerViewAdapter(listUser, surname, this, listFriends, career, requireContext())
         recyclerView = binding.list
@@ -95,22 +103,22 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val mode = when(idMode) {
-            "career" -> {
+            getString(R.string.career_id) -> {
                 getString(R.string.career)
             }
-            "100click" -> {
+            getString(R.string.cent_id) -> {
                 "100"
             }
-            "500click" -> {
+            getString(R.string.cinq_id) -> {
                 "500"
             }
-            "1kclick" -> {
+            getString(R.string.k_id)-> {
                 getString(R.string.one_k)
             }
-            "10kclick" -> {
+            getString(R.string.dix_id) -> {
                 getString(R.string.ten_k)
             }
-            "marathon" -> {
+            getString(R.string.marath_id) -> {
                 getString(R.string.marathon)
             }
             else -> {""}
@@ -155,27 +163,49 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
 
     private fun getUserFirebase() {
         val database = FirebaseDatabase.getInstance().reference
-        val leaderboardManager = LeaderboardManager(database)
 
-        leaderboardManager.getLeaderboard(idMode) { leaderboard ->
-            listUser.clear()
+        database.child("utilisateurs").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val leaderboardList = mutableListOf<UserItem>()
+                for (userSnapshot in snapshot.children) {
+                    val pseudo = userSnapshot.key ?: ""
+                    val score = userSnapshot.child(idMode).getValue(Int::class.java) ?: 0
+                    val trending = userSnapshot.child("${idMode}_trending").getValue(Int::class.java) ?: 0
+                    leaderboardList.add(UserItem(pseudo, score, trending))
+                }
 
-            leaderboard.forEach { (username, score) ->
-                val userData = UserItem(username, score)
-                listUser.add(userData)
+                updateList(leaderboardList)
             }
 
-            if (career) {
-                listUser.sortByDescending { it.number }
-            } else {
-                listUser.sortWith(compareBy<UserItem> { it.number == 0 }.thenBy { it.number })
+            override fun onCancelled(error: DatabaseError) {
+                //TODO("Not yet implemented")
             }
 
-            adapter.notifyDataSetChanged()
-            copyListAll.clear()
-            copyListAll.addAll(listUser)
+        })
+    }
 
+    fun updateList(leaderboardList :  MutableList<UserItem>) {
+        listUser.clear()
+
+//        leaderboardList.forEach { (username, score) ->
+//            val userData = UserItem(username, score)
+//            listUser.add(userData)
+//        }
+        listUser.addAll(leaderboardList)
+
+        if (career) {
+            listUser.sortByDescending { it.number }
+        } else {
+            listUser.sortWith(compareBy<UserItem> { it.number == 0 }.thenBy { it.number })
+        }
+
+        adapter.notifyDataSetChanged()
+        copyListAll.clear()
+        copyListAll.addAll(listUser)
+
+        if (!onTime) {
             goToUser()
+            onTime = true
         }
     }
 

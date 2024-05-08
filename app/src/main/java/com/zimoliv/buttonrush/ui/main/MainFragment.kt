@@ -28,14 +28,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.zimoliv.buttonrush.CustomActionView
-import com.zimoliv.buttonrush.LeaderboardManager
+import com.zimoliv.buttonrush.domain.CustomActionView
+import com.zimoliv.buttonrush.domain.LeaderboardManager
 import com.zimoliv.buttonrush.MainActivity2
-import com.zimoliv.buttonrush.PseudoDialog
+import com.zimoliv.buttonrush.domain.dialog.PseudoDialog
 import com.zimoliv.buttonrush.R
+import com.zimoliv.buttonrush.database.data.MutableInt
 import com.zimoliv.buttonrush.databinding.FragmentMainBinding
 import com.zimoliv.buttonrush.ui.ranked.UserItem
 
@@ -166,7 +170,7 @@ class MainFragment : Fragment() {
                 val database = Firebase.database
                 val myRef = database.getReference("utilisateurs")
                 val utilisateurData = HashMap<String, Any>().apply {
-                    put("career", 301)
+                    put(getString(R.string.career_id), 301)
                 }
 
                 if (surname != "User") {
@@ -381,51 +385,76 @@ class MainFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-
             vibratePhone(400)
 
             viewModel.number.value?.let { it1 ->
-                if (it1 == 150) {
-                    (activity as MainActivity2).setSaveNumber(it1 + 1)
-                } else {
-                    (activity as MainActivity2).setSaveNumber(it1)
-                }
 
                 if (it1 > 299) {
+                    val newData = viewModel.number.value.toString().toInt()
+                    val lastData = (activity as MainActivity2).getSaveNumber()
                     val database = Firebase.database
                     val myRef = database.getReference("utilisateurs")
                     val utilisateurData = HashMap<String, Any>().apply {
-                        put("career", viewModel.number.value.toString().toInt())
+                        put(getString(R.string.career_id), newData)
+                        put("${getString(R.string.career_id)}_trending", 1)
                     }
-                    myRef.child((activity as MainActivity2).getSaveName()).updateChildren(utilisateurData)
+                    val surname = (activity as MainActivity2).getSaveName()
+                    myRef.child(surname).updateChildren(utilisateurData)
+                    myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            for (userSnapshot in snapshot.children) {
+                                val pseudo = userSnapshot.key ?: ""
+                                val score = userSnapshot.child(getString(R.string.career_id)).getValue(Int::class.java) ?: 0
+//                                println("1")
+                                if (pseudo != surname) {
+//                                    println("2")
+//                                    println(newData)
+//                                    println(score)
+//                                    println(lastData)
+                                    if (newData > score && score > lastData) {
+//                                        println("3")
+                                        val updates = HashMap<String, Any>()
+                                        updates.put("${getString(R.string.career_id)}_trending", -1)
+                                        myRef.child(pseudo).updateChildren(updates)
+                                    }
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            //TODO("Not yet implemented")
+                        }
+
+                    })
+                }
+
+                if (it1 == 150) {
+                    (activity as MainActivity2).setSaveNumber(it1 + 1)
+                    tutorialMessage.text = resources.getString(R.string.bravo_three_hundred_goal_now)
+                    showTutorialBubble()
+                    binding.saveButton.visibility = View.GONE
+
+                    binding.darkOverlay.setOnClickListener {
+                        binding.darkOverlay.visibility = View.GONE
+                        tutorialBubble.isEnabled = true
+                        binding.buttonId.isEnabled = true
+                        binding.numberGoal.text = resources.getString(R.string.goal_300)
+                        hideTutorialBubble()
+                        binding.saveButton.visibility = View.VISIBLE
+                    }
+
+                    tutorialBubble.setOnClickListener {
+                        binding.darkOverlay.visibility = View.GONE
+                        tutorialBubble.isEnabled = true
+                        binding.buttonId.isEnabled = true
+                        binding.numberGoal.text = resources.getString(R.string.goal_300)
+                        hideTutorialBubble()
+                        binding.saveButton.visibility = View.VISIBLE
+                    }
+                } else {
+                    (activity as MainActivity2).setSaveNumber(it1)
                 }
             }
-
-            if (viewModel.number.value == 150) {
-
-                tutorialMessage.text = resources.getString(R.string.bravo_three_hundred_goal_now)
-                showTutorialBubble()
-                binding.saveButton.visibility = View.GONE
-
-                binding.darkOverlay.setOnClickListener {
-                    binding.darkOverlay.visibility = View.GONE
-                    tutorialBubble.isEnabled = true
-                    binding.buttonId.isEnabled = true
-                    binding.numberGoal.text = resources.getString(R.string.goal_300)
-                    hideTutorialBubble()
-                    binding.saveButton.visibility = View.VISIBLE
-                }
-
-                tutorialBubble.setOnClickListener {
-                    binding.darkOverlay.visibility = View.GONE
-                    tutorialBubble.isEnabled = true
-                    binding.buttonId.isEnabled = true
-                    binding.numberGoal.text = resources.getString(R.string.goal_300)
-                    hideTutorialBubble()
-                    binding.saveButton.visibility = View.VISIBLE
-                }
-            }
-
 
             binding.saveButton.isEnabled = false
             binding.saveButton.alpha = 0.4f
@@ -446,7 +475,7 @@ class MainFragment : Fragment() {
                 return@setOnClickListener
             }
             val bundle = Bundle()
-            bundle.putString("string1", "career")
+            bundle.putString("string1", getString(R.string.career_id))
             findNavController().navigate(R.id.action_navigation_dashboard_to_itemFragment, bundle)
         }
 
@@ -708,13 +737,14 @@ class MainFragment : Fragment() {
         val database = FirebaseDatabase.getInstance().reference
         val leaderboardManager = LeaderboardManager(database)
 
-        leaderboardManager.getLeaderboard("career") { leaderboard ->
+        leaderboardManager.getLeaderboard(getString(R.string.career_id)) { leaderboard ->
             listUser.clear()
 
-            leaderboard.forEach { (username, score) ->
-                val userData = UserItem(username, score)
-                listUser.add(userData)
-            }
+//            leaderboard.forEach { (username, score) ->
+//                val userData = UserItem(username, score)
+//                listUser.add(userData)
+//            }
+            listUser.addAll(leaderboard)
 
             listUser.sortByDescending { it.number }
             getNextScore()

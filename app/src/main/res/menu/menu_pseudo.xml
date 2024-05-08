@@ -17,7 +17,7 @@
 <!--            app:showAsAction="always|withText"-->
 <!--            android:title="user"-->
 <!--            android:icon="@drawable/person_fill0_wght400_grad0_opsz24"-->
-<!--            app:actionViewClass="com.zimoliv.buttonrush.CustomActionView" />-->
+<!--            app:actionViewClass="com.zimoliv.buttonrush.domain.CustomActionView" />-->
 
         <item
             android:id="@+id/pseudo_visible"

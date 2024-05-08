@@ -50,6 +50,7 @@ private fun formatNumberWithSpaces(number: Int): String {
         val starImage: ImageView = cardView.findViewById(R.id.image_star)
         val rankeText: TextView = cardView.findViewById(R.id.ranke_text)
         val imgButton : ImageView =  cardView.findViewById(R.id.img_button)
+        val imgTrend : ImageView =  cardView.findViewById(R.id.image_trending)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,6 +65,18 @@ private fun formatNumberWithSpaces(number: Int): String {
 
         holder.pseudoView.text = user.pseudo
         holder.rankeText.text = formatNumberWithSpaces(position + 1)
+
+        when (user.trending) {
+            -1 -> {
+                holder.imgTrend.setImageResource(R.drawable.baseline_trending_down_24)
+            }
+            1 -> {
+                holder.imgTrend.setImageResource(R.drawable.baseline_trending_up_24)
+            }
+            else -> {
+                holder.imgTrend.setImageDrawable(null)
+            }
+        }
 
         if (career) {
             holder.ranke.text = formatNumberWithSpaces(user.number)

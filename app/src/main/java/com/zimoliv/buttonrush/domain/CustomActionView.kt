@@ -1,4 +1,4 @@
-package com.zimoliv.buttonrush
+package com.zimoliv.buttonrush.domain
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.MenuItemCompat
+import com.zimoliv.buttonrush.R
 
 class CustomActionView : LinearLayout, MenuItemCompat.OnActionExpandListener {
     private lateinit var iconImageView: ImageView

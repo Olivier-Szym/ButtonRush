@@ -61,7 +61,7 @@
             android:clickable="true"
             android:focusable="true" />
 
-        <com.zimoliv.buttonrush.ui.home.ClickAnimationView
+        <com.zimoliv.buttonrush.domain.ClickAnimationView
             android:id="@+id/clickAnimationView"
             android:layout_width="0dp"
             android:layout_height="0dp"

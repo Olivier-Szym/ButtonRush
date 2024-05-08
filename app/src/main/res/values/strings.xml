@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="career_id" translatable="false">career</string>
+    <string name="cent_id" translatable="false">100click</string>
+    <string name="cinq_id" translatable="false">500click</string>
+    <string name="k_id" translatable="false">1kclick</string>
+    <string name="dix_id" translatable="false">10kclick</string>
+    <string name="marath_id" translatable="false">marathon</string>
     <string name="app_name">ButtonRush</string>
     <string name="title_home">Click Challenge</string>
     <string name="title_dashboard">Career</string>
