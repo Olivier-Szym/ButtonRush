@@ -59,4 +59,5 @@
     <string name="le_10k_click">1만번 클릭</string>
     <string name="marathon_42k_click">마라톤 42천번 클릭</string>
     <string name="search_a_player">플레이어 검색</string>
+    <string name="select_your_team">팀을 선택하십시오 :</string>
 </resources>

@@ -9,13 +9,37 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/navigation_countries_ranked"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/baseline_outlined_flag_24"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:padding="10dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toRightOf="@id/nav_view"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        app:tint="@color/orange_500"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true" />-->
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/nav_countries"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?android:attr/windowBackground"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintLeft_toRightOf="@id/nav_view"-->
+<!--        app:menu="@menu/menu_countries"/>-->
 
     <fragment
         android:id="@+id/nav_host_fragment_activity_main2"

@@ -25,6 +25,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_countries_ranked"
+        android:name="com.zimoliv.buttonrush.ui.countries.CountriesFragment"
+        tools:layout="@layout/fragment_countries_list" >
+    </fragment>
+
+    <fragment
         android:id="@+id/itemFragment"
         android:name="com.zimoliv.buttonrush.ui.ranked.ItemFragment"
         android:label="ItemFragment"

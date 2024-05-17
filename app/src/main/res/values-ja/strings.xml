@@ -59,4 +59,5 @@
     <string name="le_10k_click">10Kクリック</string>
     <string name="marathon_42k_click">マラソン42Kクリック</string>
     <string name="search_a_player">プレイヤーを検索</string>
+    <string name="select_your_team">チームを選択してください：</string>
 </resources>

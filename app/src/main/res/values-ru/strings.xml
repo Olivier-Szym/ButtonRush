@@ -59,4 +59,5 @@
     <string name="le_10k_click">10 000 кликов</string>
     <string name="marathon_42k_click">Марафон 42 000 кликов</string>
     <string name="search_a_player">Поиск игрока</string>
+    <string name="select_your_team">Выберите свою команду :</string>
 </resources>

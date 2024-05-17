@@ -59,4 +59,5 @@
     <string name="le_10k_click">10千 次点击</string>
     <string name="marathon_42k_click">马拉松 42千 次点击</string>
     <string name="search_a_player">搜索玩家</string>
+    <string name="select_your_team">选择你的队伍：</string>
 </resources>

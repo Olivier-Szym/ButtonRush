@@ -54,7 +54,7 @@ class MainActivity2 : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_countries_ranked
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -71,6 +71,11 @@ class MainActivity2 : AppCompatActivity() {
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
+                        val number = getSaveNumber()
+                        if (number < (dataSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java)?.toInt() ?: 0)) {
+                            setSaveNumber((dataSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java)?.toInt() ?: 0))
+                        }
+
                         val record100 = getRecord100()
                         if ((dataSnapshot.child(getString(R.string.cent_id) ).getValue(Int::class.java)?.toLong() ?: (record100 + 1)) > record100 && record100 > 0) {
                             val utilisateurData = HashMap<String, Any>().apply {
@@ -134,12 +139,24 @@ class MainActivity2 : AppCompatActivity() {
     fun setNavigationEnabled(isEnabled: Boolean) {
         navView.menu.findItem(R.id.navigation_home).setOnMenuItemClickListener {
             if (isEnabled) {
+//                navView.selectedItemId = R.id.invisible_country
+//                binding.navCountries.isItemActiveIndicatorEnabled = false
                 false
             } else {
                 Toast.makeText(this, getString(R.string.save_before), Toast.LENGTH_SHORT).show()
                 true
             }
         }
+//        binding.navCountries.menu.findItem(R.id.navigation_countries_ranked).setOnMenuItemClickListener {
+//            if (isEnabled) {
+////                navView.selectedItemId = R.id.invisible_mode
+//                navView.isItemActiveIndicatorEnabled = false
+//                false
+//            } else {
+//                Toast.makeText(this, getString(R.string.save_before), Toast.LENGTH_SHORT).show()
+//                true
+//            }
+//        }
     }
     fun setSaveNumber(number: Int) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
@@ -149,6 +166,28 @@ class MainActivity2 : AppCompatActivity() {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
         return sharedPreferences.getInt("number", 0)
     }
+    fun setCountry(str: String) {
+        val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
+        str.let { sharedPreferences.edit().putString("country", it).apply() }
+    }
+    fun getCountry() : String? {
+        val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("country", "GB")
+    }
+//    fun lastValueUpdated(int: Int) : Int {
+//        val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
+//        val test = sharedPreferences.getInt("lastValue", 0)
+//        if (int > 0) {
+//            if (test < 0) {
+//                int.let { sharedPreferences.edit().putInt("lastValue", it).apply() }
+//                return int
+//            } else {
+//                return test
+//            }
+//        } else {
+//            return sharedPreferences.getInt("lastValue", 0)
+//        }
+//    }
     fun getSaveName() : String {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
         val name = sharedPreferences.getString("name", "User")

@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -169,20 +171,76 @@ class MainFragment : Fragment() {
                 val surname = (activity as MainActivity2).getSaveName()
                 val database = Firebase.database
                 val myRef = database.getReference("utilisateurs")
-                val utilisateurData = HashMap<String, Any>().apply {
-                    put(getString(R.string.career_id), 301)
-                }
+                val countriesRef = database.getReference("countries")
+//                val utilisateurData = HashMap<String, Any>().apply {
+//                    put(getString(R.string.career_id), 301)
+//                }
 
                 if (surname != "User") {
+                    val utilisateurData = HashMap<String, Any>().apply {
+                        put(getString(R.string.career_id), 301)
+                    }
                     myRef.child(surname).setValue(utilisateurData)
+
+                    val countr = (activity as MainActivity2).getCountry()
+                    if (countr != null) {
+                        countriesRef.child(countr).runTransaction(object : Transaction.Handler {
+                            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                                val currentValue = currentData.getValue(Int::class.java) ?: 0
+                                currentData.value = currentValue + 301
+                                return Transaction.success(currentData)
+                            }
+
+                            override fun onComplete(
+                                error: DatabaseError?,
+                                committed: Boolean,
+                                currentData: DataSnapshot?
+                            ) {
+                                // Transaction completed
+                                if (error != null) {
+                                    println("Transaction failed: ${error.message}")
+//                                    (activity as MainActivity2).lastValueUpdated(301)
+
+                                } else {
+                                    println("Transaction success")
+                                }
+                            }
+                        })
+                    }
                 } else {
                     val createUserFragment = PseudoDialog(requireContext())
                     createUserFragment.isCancelable = false
                     createUserFragment.listener = object: PseudoDialog.CreateUserDialogListener {
-                        override fun onDialogPositiveClick(pseudo: String) {
+                        override fun onDialogPositiveClick(pseudo: String, country: String) {
                             (activity as MainActivity2).setSaveName(pseudo)
-
+                            (activity as MainActivity2).setCountry(country)
+                            val utilisateurData = HashMap<String, Any>().apply {
+                                put(getString(R.string.career_id), 301)
+                                put("country", country)
+                            }
                             myRef.child(pseudo).setValue(utilisateurData)
+                            countriesRef.child(country).runTransaction(object : Transaction.Handler {
+                                override fun doTransaction(currentData: MutableData): Transaction.Result {
+                                    val currentValue = currentData.getValue(Int::class.java) ?: 0
+                                    currentData.value = currentValue + 301
+                                    return Transaction.success(currentData)
+                                }
+
+                                override fun onComplete(
+                                    error: DatabaseError?,
+                                    committed: Boolean,
+                                    currentData: DataSnapshot?
+                                ) {
+                                    // Transaction completed
+                                    if (error != null) {
+                                        println("Transaction failed: ${error.message}")
+//                                        (activity as MainActivity2).lastValueUpdated(301)
+
+                                    } else {
+                                        println("Transaction success")
+                                    }
+                                }
+                            })
                             viewModel.number.value?.let { it1 ->
                                 (activity as MainActivity2).setSaveNumber(
                                     it1 + 1
@@ -399,22 +457,45 @@ class MainFragment : Fragment() {
                         put("${getString(R.string.career_id)}_trending", 1)
                     }
                     val surname = (activity as MainActivity2).getSaveName()
+                    val countr = (activity as MainActivity2).getCountry()
+                    val countriesRef = database.getReference("countries")
+                    if (countr != null) {
+                        val number = newData - (activity as MainActivity2).getSaveNumber()
+
+                        countriesRef.child(countr).runTransaction(object : Transaction.Handler {
+                            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                                val currentValue = currentData.getValue(Int::class.java) ?: 0
+                                currentData.value = currentValue + number
+                                return Transaction.success(currentData)
+                            }
+
+                            override fun onComplete(
+                                error: DatabaseError?,
+                                committed: Boolean,
+                                currentData: DataSnapshot?
+                            ) {
+                                // Transaction completed
+                                if (error != null) {
+                                    println("Transaction failed: ${error.message}")
+//                                    (activity as MainActivity2).lastValueUpdated(301)
+
+                                } else {
+                                    println("Transaction success")
+                                }
+                            }
+                        })
+                    }
                     myRef.child(surname).updateChildren(utilisateurData)
                     myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (userSnapshot in snapshot.children) {
                                 val pseudo = userSnapshot.key ?: ""
                                 val score = userSnapshot.child(getString(R.string.career_id)).getValue(Int::class.java) ?: 0
-//                                println("1")
+
                                 if (pseudo != surname) {
-//                                    println("2")
-//                                    println(newData)
-//                                    println(score)
-//                                    println(lastData)
-                                    if (newData > score && score > lastData) {
-//                                        println("3")
+                                    if (score in (lastData + 1)..<newData) {
                                         val updates = HashMap<String, Any>()
-                                        updates.put("${getString(R.string.career_id)}_trending", -1)
+                                        updates["${getString(R.string.career_id)}_trending"] = -1
                                         myRef.child(pseudo).updateChildren(updates)
                                     }
                                 }

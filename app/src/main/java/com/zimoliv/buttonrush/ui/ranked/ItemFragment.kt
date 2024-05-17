@@ -171,7 +171,8 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
                     val pseudo = userSnapshot.key ?: ""
                     val score = userSnapshot.child(idMode).getValue(Int::class.java) ?: 0
                     val trending = userSnapshot.child("${idMode}_trending").getValue(Int::class.java) ?: 0
-                    leaderboardList.add(UserItem(pseudo, score, trending))
+                    val country = userSnapshot.child("country").getValue(String::class.java) ?: ""
+                    leaderboardList.add(UserItem(pseudo, score, trending, country))
                 }
 
                 updateList(leaderboardList)

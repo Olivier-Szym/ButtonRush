@@ -59,4 +59,5 @@
     <string name="le_10k_click">10K tıklama</string>
     <string name="marathon_42k_click">Maraton 42K tıklama</string>
     <string name="search_a_player">Bir oyuncu arayın</string>
+    <string name="select_your_team">Takımınızı seçin :</string>
 </resources>

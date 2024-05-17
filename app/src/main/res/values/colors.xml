@@ -14,8 +14,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorPrimaryDark">#1E88E5</color>
-<!--    <color name="colorPrimaryDarker">#1565C0</color>-->
-<!--    <color name="colorAccentDark">#E57373</color>-->
 
     <color name="marron">#D2691E</color>
 
@@ -23,9 +21,6 @@
     <color name="orange">#99FFB700</color>
     <color name="red_orange">#99FF8400</color>
     <color name="red">#7AFF1E00</color>
-
-<!--    <color name="yellow">#FFFF00</color>-->
-<!--    <color name="red">#FF0000</color>-->
     <color name="adapter_blue">#5292C3</color>
     <color name="adapter_green">#3BB84C</color>
     <color name="adapter_greener">#32973F</color>
@@ -33,5 +28,4 @@
     <color name="adapter_red">#C300FF7F</color>
     <color name="adapter_reder">#A4AF4335</color>
     <color name="white_dark">#838383</color>
-<!--    <color name="colorPrimary">#6200EA</color>-->
 </resources>

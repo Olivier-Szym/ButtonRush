@@ -17,7 +17,8 @@ class LeaderboardManager(private val database: DatabaseReference) {
                     val pseudo = userSnapshot.key ?: ""
                     val score = userSnapshot.child(category).getValue(Int::class.java) ?: 0
                     val trending = userSnapshot.child("${category}_trending").getValue(Int::class.java) ?: 0
-                    leaderboardList.add(UserItem(pseudo, score, trending))
+                    val country = userSnapshot.child("country").getValue(String::class.java) ?: ""
+                    leaderboardList.add(UserItem(pseudo, score, trending, country))
                 }
 
                 // Trier la liste selon le score

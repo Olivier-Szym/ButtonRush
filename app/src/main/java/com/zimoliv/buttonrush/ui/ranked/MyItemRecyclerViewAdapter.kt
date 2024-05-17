@@ -11,7 +11,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView
+import com.vdurmont.emoji.EmojiManager
 import com.zimoliv.buttonrush.R
+import java.util.Locale
 
 class MyItemRecyclerViewAdapter(
     private val users: MutableList<UserItem>,
@@ -51,6 +53,7 @@ private fun formatNumberWithSpaces(number: Int): String {
         val rankeText: TextView = cardView.findViewById(R.id.ranke_text)
         val imgButton : ImageView =  cardView.findViewById(R.id.img_button)
         val imgTrend : ImageView =  cardView.findViewById(R.id.image_trending)
+        val flagText: TextView = cardView.findViewById(R.id.text_view_emoji)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -65,6 +68,15 @@ private fun formatNumberWithSpaces(number: Int): String {
 
         holder.pseudoView.text = user.pseudo
         holder.rankeText.text = formatNumberWithSpaces(position + 1)
+
+        val locale = Locale("", user.country)
+        val countryName = locale.displayCountry
+        if (countryName.isNotEmpty()) {
+            val emoji = EmojiManager.getForAlias(user.country.lowercase(Locale.getDefault()))
+            if (emoji != null) {
+                holder.flagText.text = emoji.unicode
+            }
+        }
 
         when (user.trending) {
             -1 -> {

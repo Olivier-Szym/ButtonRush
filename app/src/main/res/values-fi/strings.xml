@@ -59,4 +59,5 @@
     <string name="le_10k_click">10K klikkausta</string>
     <string name="marathon_42k_click">Maraton 42K klikkausta</string>
     <string name="search_a_player">Etsi pelaajaa</string>
+    <string name="select_your_team">Valitse joukkueesi :</string>
 </resources>

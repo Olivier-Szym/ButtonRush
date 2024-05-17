@@ -226,7 +226,7 @@ class HomeFragment : Fragment(), PauseDialogListener {
                     else -> {getString(R.string.career_id)}
                 }
                 val bundle = Bundle()
-                bundle.putString("string1", idTest.toString())
+                bundle.putString("string1", idTest)
                 findNavController().navigate(R.id.action_navigation_home_to_itemFragment, bundle)
             }
         }
@@ -396,7 +396,7 @@ class HomeFragment : Fragment(), PauseDialogListener {
         return result.reverse().toString()
     }
 
-    fun saveRecord(goal: Int) {
+    private fun saveRecord(goal: Int) {
         when (goal) {
             500 -> {
                 (activity as MainActivity2).setRecord500(elapsedTime)
@@ -455,9 +455,10 @@ class HomeFragment : Fragment(), PauseDialogListener {
                                         val pseudo = userSnapshot.key ?: ""
                                         val score = userSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java) ?: 0
                                         if (pseudo != surname) {
-                                            if (time < score && score < lastRecord) {
+                                            if (score in (time + 1)..<lastRecord) {
                                                 val updates = HashMap<String, Any>()
-                                                updates.put("${getString(R.string.cent_id)}_trending", -1)
+                                                updates["${getString(R.string.cent_id)}_trending"] =
+                                                    -1
                                                 myRef.child(pseudo).updateChildren(updates)
                                             }
                                         }
@@ -470,9 +471,10 @@ class HomeFragment : Fragment(), PauseDialogListener {
                                         val pseudo = userSnapshot.key ?: ""
                                         val score = userSnapshot.child(getString(R.string.cinq_id)).getValue(Int::class.java) ?: 0
                                         if (pseudo != surname) {
-                                            if (time < score && score < lastRecord) {
+                                            if (score in (time + 1)..<lastRecord) {
                                                 val updates = HashMap<String, Any>()
-                                                updates.put("${getString(R.string.cinq_id)}_trending", -1)
+                                                updates["${getString(R.string.cinq_id)}_trending"] =
+                                                    -1
                                                 myRef.child(pseudo).updateChildren(updates)
                                             }
                                         }
@@ -485,9 +487,9 @@ class HomeFragment : Fragment(), PauseDialogListener {
                                         val pseudo = userSnapshot.key ?: ""
                                         val score = userSnapshot.child(getString(R.string.k_id)).getValue(Int::class.java) ?: 0
                                         if (pseudo != surname) {
-                                            if (time < score && score < lastRecord) {
+                                            if (score in (time + 1)..<lastRecord) {
                                                 val updates = HashMap<String, Any>()
-                                                updates.put("${getString(R.string.k_id)}_trending", -1)
+                                                updates["${getString(R.string.k_id)}_trending"] = -1
                                                 myRef.child(pseudo).updateChildren(updates)
                                             }
                                         }
@@ -500,9 +502,10 @@ class HomeFragment : Fragment(), PauseDialogListener {
                                         val pseudo = userSnapshot.key ?: ""
                                         val score = userSnapshot.child(getString(R.string.dix_id)).getValue(Int::class.java) ?: 0
                                         if (pseudo != surname) {
-                                            if (time < score && score < lastRecord) {
+                                            if (score in (time + 1)..<lastRecord) {
                                                 val updates = HashMap<String, Any>()
-                                                updates.put("${getString(R.string.dix_id)}_trending", -1)
+                                                updates["${getString(R.string.dix_id)}_trending"] =
+                                                    -1
                                                 myRef.child(pseudo).updateChildren(updates)
                                             }
                                         }
@@ -515,9 +518,10 @@ class HomeFragment : Fragment(), PauseDialogListener {
                                         val pseudo = userSnapshot.key ?: ""
                                         val score = userSnapshot.child(getString(R.string.marath_id)).getValue(Int::class.java) ?: 0
                                         if (pseudo != surname) {
-                                            if (time < score && score < lastRecord) {
+                                            if (score in (time + 1)..<lastRecord) {
                                                 val updates = HashMap<String, Any>()
-                                                updates.put("${getString(R.string.marath_id)}_trending", -1)
+                                                updates["${getString(R.string.marath_id)}_trending"] =
+                                                    -1
                                                 myRef.child(pseudo).updateChildren(updates)
                                             }
                                         }
@@ -575,7 +579,7 @@ class HomeFragment : Fragment(), PauseDialogListener {
             createUserFragment.isCancelable = false
             createUserFragment.listener = object: PseudoDialog.CreateUserDialogListener {
                 @SuppressLint("ClickableViewAccessibility")
-                override fun onDialogPositiveClick(pseudo: String) {
+                override fun onDialogPositiveClick(pseudo: String, country: String) {
                     binding.buttonClick.isEnabled = true
                     binding.buttonClick.setOnTouchListener { _, event ->
                         when (event.actionMasked) {
@@ -608,12 +612,14 @@ class HomeFragment : Fragment(), PauseDialogListener {
                         }
                     }
                     (activity as MainActivity2).setSaveName(pseudo)
+                    (activity as MainActivity2).setCountry(country)
 //                    saveRecord(goal)
                     val database = Firebase.database
                     val myRef = database.getReference("utilisateurs")
 //                    myRef.addListenerForSingleValueEvent(object : ValueEventListener {
 //                        override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val utilisateurData = HashMap<String, Any>().apply {
+                                put("country", country)
                                 when (goal) {
                                     100 -> {
 //                                        for (userSnapshot in dataSnapshot.children) {

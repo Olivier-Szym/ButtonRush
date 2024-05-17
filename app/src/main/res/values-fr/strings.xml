@@ -59,4 +59,5 @@
     <string name="le_10k_click">Le 10K clicks</string>
     <string name="marathon_42k_click">Marathon 42K clicks</string>
     <string name="search_a_player">Rechercher un joueur</string>
+    <string name="select_your_team">Sélectionnez votre équipe :</string>
 </resources>

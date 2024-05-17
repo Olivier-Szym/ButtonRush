@@ -15,7 +15,6 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.EmojiCompatConfigurationView
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,12 +32,12 @@ class PseudoDialog(context: Context) : DialogFragment() {
     var selectedCountry: String = ""
 
     interface CreateUserDialogListener {
-        fun onDialogPositiveClick(pseudo: String)
+        fun onDialogPositiveClick(pseudo: String, country: String)
     }
 
     var listener: CreateUserDialogListener? = null
 
-    fun marginFunction(left: Int, top: Int, right:Int, bottom:Int) : LinearLayout.LayoutParams {
+    private fun marginFunction(left: Int, top: Int, right:Int, bottom:Int) : LinearLayout.LayoutParams {
         val marginParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -56,37 +55,22 @@ class PseudoDialog(context: Context) : DialogFragment() {
             hint = getString(R.string.write_your_surname)
         }
 
-// Récupérer la liste de tous les pays
-//        val locales = Locale.getAvailableLocales()
-//        val countries = mutableListOf<String>()
-//        for (locale in locales) {
-//            val country = locale.displayCountry
-//            if (country.isNotEmpty() && !countries.contains(country)) {
-//                countries.add(country)
-//            }
-//        }
-//
-//        countries.sort()
-
         val locales = Locale.getISOCountries()
 
-// Initialisez une liste pour stocker les noms de pays avec emojis
         val countriesWithEmojis = mutableListOf<String>()
         val countries = mutableListOf<String>()
+        val countriesCode = mutableListOf<Pair<String, String>>()
 
-// Pour chaque code ISO de pays
         for (countryCode in locales) {
-            println("test1:$countryCode")
-            // Créez un objet Locale avec le code de pays
+
             val locale = Locale("", countryCode)
 
-            // Vérifiez si le nom du pays contient uniquement des lettres
-            val countryName = locale.country
-            if (countryName.isNotEmpty() && countryName.all { it.isLetter() }) {
+            val countryName = locale.displayCountry
+            if (countryName.isNotEmpty()) {
+                countriesCode.add(Pair(countryName, countryCode))
                 countries.add(countryName)
-                println("test2:$countryName")
-                // Obtenez l'emoji correspondant au pays
-                val emoji = EmojiManager.getForAlias(countryCode.toLowerCase())
+
+                val emoji = EmojiManager.getForAlias(countryCode.lowercase(Locale.getDefault()))
 
                 // Ajoutez l'emoji et le nom du pays à la liste
                 if (emoji != null) {
@@ -100,6 +84,7 @@ class PseudoDialog(context: Context) : DialogFragment() {
 
 // Triez la liste des pays avec emojis par ordre alphabétique
         countriesWithEmojis.sortWith(CountryComparator())
+        countriesCode.sortBy { it.first }
         countries.sort()
 
 // Récupérer le pays par défaut du téléphone
@@ -117,7 +102,7 @@ class PseudoDialog(context: Context) : DialogFragment() {
         }
 
         val textView2 = TextView(context2)
-        textView2.text = "Select your team :"
+        textView2.text = getString(R.string.select_your_team)
         textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
 //        textView2.gravity = Gravity.CENTER
 
@@ -135,7 +120,7 @@ class PseudoDialog(context: Context) : DialogFragment() {
                 layoutParams.gravity = Gravity.CENTER
                 spinner.layoutParams = layoutParams
                 // Récupérez le pays sélectionné
-                selectedCountry = countriesWithEmojis[position]
+                selectedCountry = countriesCode[position].second
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -166,13 +151,13 @@ class PseudoDialog(context: Context) : DialogFragment() {
                                 if (dataSnapshot.exists()) {
                                     Toast.makeText(context2, getString(R.string.alredy_taken_pseudo), Toast.LENGTH_SHORT).show()
                                 } else {
-                                    listener?.onDialogPositiveClick(pseudo)
+                                    listener?.onDialogPositiveClick(pseudo, selectedCountry)
                                     alertDialog?.dismiss() // Fermer manuellement le dialogue
                                 }
                             }
 
                             override fun onCancelled(databaseError: DatabaseError) {
-                                // Gérer les erreurs
+                                Toast.makeText(context2, "Nécessite une connection internet", Toast.LENGTH_LONG).show()
                             }
                         })
                     } else {
