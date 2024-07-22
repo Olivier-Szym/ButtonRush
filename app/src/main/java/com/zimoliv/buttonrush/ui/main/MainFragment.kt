@@ -19,6 +19,11 @@ import android.view.MenuInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.TranslateAnimation
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -28,6 +33,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.Glide
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -36,6 +44,7 @@ import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.vdurmont.emoji.EmojiManager
 import com.zimoliv.buttonrush.domain.CustomActionView
 import com.zimoliv.buttonrush.domain.LeaderboardManager
 import com.zimoliv.buttonrush.MainActivity2
@@ -44,6 +53,7 @@ import com.zimoliv.buttonrush.R
 import com.zimoliv.buttonrush.database.data.MutableInt
 import com.zimoliv.buttonrush.databinding.FragmentMainBinding
 import com.zimoliv.buttonrush.ui.ranked.UserItem
+import java.util.Locale
 
 class MainFragment : Fragment() {
 
@@ -61,6 +71,8 @@ class MainFragment : Fragment() {
     private lateinit var adapter: ProgressButtonsRecyclerViewAdapter
     private var lastValue = 0
 
+//    private lateinit var animationView: LottieAnimationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -76,8 +88,22 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+
         tutorialBubble = binding.tutorialBubble
         val tutorialMessage = binding.tutorialMessage
+//        animationView= binding.animationViewFire
+
+        Glide.with(requireContext())
+            .asGif()
+            .load(R.drawable.animation_gif_fire)
+            .into(binding.imageViewFire)
+
+        Glide.with(requireContext())
+            .asGif()
+            .load(R.drawable.animation_sparkling)
+            .into(binding.imageAnimationSparkles)
 
         adapter = ProgressButtonsRecyclerViewAdapter(actualNumberProgress, requireContext())
         val recyclerView = binding.listProgress
@@ -459,9 +485,13 @@ class MainFragment : Fragment() {
                     val surname = (activity as MainActivity2).getSaveName()
                     val countr = (activity as MainActivity2).getCountry()
                     val countriesRef = database.getReference("countries")
-                    if (countr != null) {
-                        val number = newData - (activity as MainActivity2).getSaveNumber()
+                    val number = newData - (activity as MainActivity2).getSaveNumber()
 
+                    val textView = binding.textViewClicksAdded
+
+                    showClicksAddedAnimation(root, textView, number)
+
+                    if (countr != null) {
                         countriesRef.child(countr).runTransaction(object : Transaction.Handler {
                             override fun doTransaction(currentData: MutableData): Transaction.Result {
                                 val currentValue = currentData.getValue(Int::class.java) ?: 0
@@ -576,10 +606,20 @@ class MainFragment : Fragment() {
         if (surname != "User") {
             menu.setGroupVisible(R.id.group_menu_pseudo, true)
             val customActionView = CustomActionView(requireContext())
-            customActionView.setTitle(truncatedSurname)
+            val country = (activity as MainActivity2).getCountry()
+            val emoji = EmojiManager.getForAlias(country?.lowercase(Locale.getDefault()) ?: "")
+            if (emoji != null) {
+                customActionView.setTitle("${emoji.unicode} $truncatedSurname")
+            } else {
+                customActionView.setTitle(truncatedSurname)
+            }
             val menuItem = menu.findItem(R.id.pseudo_visible)
             // Associer la vue personnalisée à l'élément de menu
             MenuItemCompat.setActionView(menuItem, customActionView)
+
+            customActionView.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_dashboard_to_settingsFragment)
+            }
         } else {
             menu.setGroupVisible(R.id.group_menu_pseudo, false)
         }
@@ -681,8 +721,24 @@ class MainFragment : Fragment() {
         handler2.post(object : Runnable {
             override fun run() {
                 val cps = clickCount
+
+                if (cps > 60) {
+                    (activity as MainActivity2).clearLocalData()
+                    (activity as MainActivity2).restartApp()
+                }
+
                 clickCount = 0
                 binding.numberClickSeconde.text = cps.toString()
+
+                if (cps > 20) {
+//                    animationView.playAnimation()
+                    binding.imageViewFire.visibility = View.VISIBLE
+                    binding.imageAnimationSparkles.visibility = View.VISIBLE
+                } else {
+//                    animationView.pauseAnimation()
+                    binding.imageViewFire.visibility = View.INVISIBLE
+                    binding.imageAnimationSparkles.visibility = View.INVISIBLE
+                }
 
                 if (cps > 14) {
                     animateProgressBar(lastValue, cps, 500, true)
@@ -815,7 +871,7 @@ class MainFragment : Fragment() {
     }
 
     private fun getUserFirebase() {
-        val database = FirebaseDatabase.getInstance().reference
+        val database = FirebaseDatabase.getInstance().reference.child("utilisateurs")
         val leaderboardManager = LeaderboardManager(database)
 
         leaderboardManager.getLeaderboard(getString(R.string.career_id)) { leaderboard ->
@@ -862,5 +918,36 @@ class MainFragment : Fragment() {
         }
 
         recyclerView.scrollToPosition(position)
+    }
+
+    private fun showClicksAddedAnimation(rootView: View, textView: TextView, clicksAdded: Int) {
+        textView.text = "+$clicksAdded"
+        textView.visibility = View.VISIBLE
+
+        // Animation for translation (moving up)
+        val translateAnimation = TranslateAnimation(0f, 0f, 0f, -200f)
+        translateAnimation.duration = 2000
+
+        // Animation for fading out
+        val alphaAnimation = AlphaAnimation(1.0f, 0.0f)
+        alphaAnimation.duration = 2000
+
+        // Animation set to combine both animations
+        val animationSet = AnimationSet(true)
+        animationSet.addAnimation(translateAnimation)
+        animationSet.addAnimation(alphaAnimation)
+
+        // Listener to hide the TextView at the end of the animation
+        animationSet.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                textView.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        textView.startAnimation(animationSet)
     }
 }

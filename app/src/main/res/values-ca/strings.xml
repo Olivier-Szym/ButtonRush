@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Desafiament de Clics</string>
     <string name="title_dashboard">Carrera</string>
     <string name="welcome_message">Benvingut al mode de carrera! Ara, a l\'atac i feu clic al botó 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Marató 42K clics</string>
     <string name="search_a_player">Cerca un jugador</string>
     <string name="select_your_team">Selecciona el teu equip :</string>
+
+    <string name="cancel">Cancel·la</string>
+    <string name="profile">Perfil</string>
+    <string name="friends">Amics : %1$s</string>
+    <string name="current_team">Equip actual :</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Ha ocorregut un error. Si us plau, torna-ho a provar més tard.</string>
+    <string name="n_cessite_une_connection_internet">Requereix una connexió a Internet</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">No s\'ha pogut recuperar les dades de l\'usuari.</string>
+    <string name="l_utilisateur_n_existe_pas">L\'usuari no existeix.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">No s\'ha pogut eliminar l\'antic nom d\'usuari.</string>
+    <string name="chec_du_changement_de_pseudo">No s\'ha pogut canviar el nom d\'usuari.</string>
+    <string name="pseudo_chang_avec_succ_s">Nom d\'usuari canviat amb èxit.</string>
+
 </resources>

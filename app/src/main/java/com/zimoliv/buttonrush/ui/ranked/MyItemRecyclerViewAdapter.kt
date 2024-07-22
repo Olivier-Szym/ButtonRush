@@ -53,7 +53,7 @@ private fun formatNumberWithSpaces(number: Int): String {
         val rankeText: TextView = cardView.findViewById(R.id.ranke_text)
         val imgButton : ImageView =  cardView.findViewById(R.id.img_button)
         val imgTrend : ImageView =  cardView.findViewById(R.id.image_trending)
-        val flagText: TextView = cardView.findViewById(R.id.text_view_emoji)
+//        val flagText: TextView = cardView.findViewById(R.id.text_view_emoji)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -66,17 +66,28 @@ private fun formatNumberWithSpaces(number: Int): String {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
 
-        holder.pseudoView.text = user.pseudo
+//        holder.pseudoView.text = user.pseudo
         holder.rankeText.text = formatNumberWithSpaces(position + 1)
 
-        val locale = Locale("", user.country)
-        val countryName = locale.displayCountry
-        if (countryName.isNotEmpty()) {
-            val emoji = EmojiManager.getForAlias(user.country.lowercase(Locale.getDefault()))
-            if (emoji != null) {
-                holder.flagText.text = emoji.unicode
-            }
+//        val locale = Locale("", user.country)
+//        val countryName = locale.displayCountry
+        val emoji = EmojiManager.getForAlias(user.country.lowercase(Locale.getDefault()))
+        if (emoji != null) {
+            holder.pseudoView.text = "${emoji.unicode} ${user.pseudo}"
+        } else {
+            holder.pseudoView.text = user.pseudo
         }
+
+//        val locale = Locale("", user.country)
+////        val countryName = locale.displayCountry
+////        if (countryName.isNotEmpty()) {
+//            val emoji = EmojiManager.getForAlias(user.country.lowercase(Locale.getDefault()))
+//            if (emoji != null) {
+//                holder.flagText.text = "${emoji.unicode}"
+//            } else {
+//                holder.flagText.text = ""
+//            }
+////        }
 
         when (user.trending) {
             -1 -> {

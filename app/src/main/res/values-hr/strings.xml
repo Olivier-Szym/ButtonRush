@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Izazov klika</string>
     <string name="title_dashboard">Karijera</string>
     <string name="welcome_message">Dobrodošli u način karijere! Sada napadajte i kliknite na gumb 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Maraton 42k klikova</string>
     <string name="search_a_player">Traži igrača</string>
     <string name="select_your_team">Odaberite svoj tim :</string>
+
+    <string name="cancel">Odustani</string>
+    <string name="profile">Profil</string>
+    <string name="friends">Prijatelji: %1$s</string>
+    <string name="current_team">Trenutni tim:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Došlo je do greške. Pokušajte ponovo kasnije.</string>
+    <string name="n_cessite_une_connection_internet">Zahtijeva internetsku vezu</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Neuspješno dohvaćanje korisničkih podataka.</string>
+    <string name="l_utilisateur_n_existe_pas">Korisnik ne postoji.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Neuspješno brisanje starog korisničkog imena.</string>
+    <string name="chec_du_changement_de_pseudo">Neuspješna promjena korisničkog imena.</string>
+    <string name="pseudo_chang_avec_succ_s">Korisničko ime uspješno promijenjeno.</string>
+
 </resources>

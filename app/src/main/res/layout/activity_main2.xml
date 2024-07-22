@@ -15,32 +15,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/navigation_countries_ranked"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/baseline_outlined_flag_24"-->
-<!--        android:layout_gravity="bottom|end"-->
-<!--        android:padding="10dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintLeft_toRightOf="@id/nav_view"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        app:tint="@color/orange_500"-->
-<!--        android:clickable="true"-->
-<!--        android:focusable="true" />-->
-
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/nav_countries"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="?android:attr/windowBackground"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintLeft_toRightOf="@id/nav_view"-->
-<!--        app:menu="@menu/menu_countries"/>-->
-
     <fragment
         android:id="@+id/nav_host_fragment_activity_main2"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -53,9 +27,43 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view_checkmark"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:lottie_rawRes="@raw/animation_checkmark"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false" />
+
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/konfetti_view_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/textViewArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="↑"
+        android:textColor="#6E6E6E"
+        android:textSize="150sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-25dp"
+        android:visibility="gone"/>
+
+<!--    <com.google.android.gms.ads.AdView-->
+<!--        android:id="@+id/adView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:adSize="BANNER"-->
+<!--        app:adUnitId="ca-app-pub-3940256099942544/6300978111"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/nav_view"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

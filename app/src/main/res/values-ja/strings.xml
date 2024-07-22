@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">クリックチャレンジ</string>
     <string name="title_dashboard">キャリア</string>
     <string name="welcome_message">キャリアモードへようこそ！さあ、攻撃してボタンをクリック 🔴 ！</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">マラソン42Kクリック</string>
     <string name="search_a_player">プレイヤーを検索</string>
     <string name="select_your_team">チームを選択してください：</string>
+
+    <string name="cancel">キャンセル</string>
+    <string name="profile">プロフィール</string>
+    <string name="friends">友達: %1$s</string>
+    <string name="current_team">現在のチーム:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">エラーが発生しました。後でもう一度お試しください。</string>
+    <string name="n_cessite_une_connection_internet">インターネット接続が必要です</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">ユーザーデータの取得に失敗しました。</string>
+    <string name="l_utilisateur_n_existe_pas">ユーザーが存在しません。</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">古いユーザー名の削除に失敗しました。</string>
+    <string name="chec_du_changement_de_pseudo">ユーザー名の変更に失敗しました。</string>
+    <string name="pseudo_chang_avec_succ_s">ユーザー名が正常に変更されました。</string>
+
 </resources>

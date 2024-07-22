@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Provocare de Clicuri</string>
     <string name="title_dashboard">Carieră</string>
     <string name="welcome_message">Bine ai venit în modul de carieră! Acum, atacă și apasă pe butonul 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Maraton 42K de apăsări</string>
     <string name="search_a_player">Caută un jucător</string>
     <string name="select_your_team">Selectați echipa dvs. :</string>
+
+    <string name="cancel">Anulează</string>
+    <string name="profile">Profil</string>
+    <string name="friends">Prietenii: %1$s</string>
+    <string name="current_team">Echipa actuală:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">A apărut o eroare. Te rugăm să încerci din nou mai târziu.</string>
+    <string name="n_cessite_une_connection_internet">Necesară o conexiune la internet</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Eșec la recuperarea datelor utilizatorului.</string>
+    <string name="l_utilisateur_n_existe_pas">Utilizatorul nu există.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Eșec la ștergerea vechiului nume de utilizator.</string>
+    <string name="chec_du_changement_de_pseudo">Eșec la schimbarea numelui de utilizator.</string>
+    <string name="pseudo_chang_avec_succ_s">Numele de utilizator a fost schimbat cu succes.</string>
+
 </resources>

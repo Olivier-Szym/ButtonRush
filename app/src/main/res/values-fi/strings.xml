@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Klikkaushaaste</string>
     <string name="title_dashboard">Ura</string>
     <string name="welcome_message">Tervetuloa uramoodiin! Nyt hyökkää ja napsauta painiketta 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Maraton 42K klikkausta</string>
     <string name="search_a_player">Etsi pelaajaa</string>
     <string name="select_your_team">Valitse joukkueesi :</string>
+
+    <string name="cancel">Peruuta</string>
+    <string name="profile">Profiili</string>
+    <string name="friends">Ystävät: %1$s</string>
+    <string name="current_team">Nykyinen tiimi:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Tapahtui virhe. Yritä uudelleen myöhemmin.</string>
+    <string name="n_cessite_une_connection_internet">Vaatii internet-yhteyden</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Käyttäjätietojen hakeminen epäonnistui.</string>
+    <string name="l_utilisateur_n_existe_pas">Käyttäjää ei ole olemassa.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Vanhan käyttäjänimen poistaminen epäonnistui.</string>
+    <string name="chec_du_changement_de_pseudo">Käyttäjänimen vaihtaminen epäonnistui.</string>
+    <string name="pseudo_chang_avec_succ_s">Käyttäjänimi vaihdettiin onnistuneesti.</string>
+
 </resources>

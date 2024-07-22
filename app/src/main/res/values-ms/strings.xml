@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Cabaran Klik</string>
     <string name="title_dashboard">Kerjaya</string>
     <string name="welcome_message">Selamat datang ke mod kerjaya! Sekarang, serang dan klik butang 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Marathon 42K klik</string>
     <string name="search_a_player">Cari Pemain</string>
     <string name="select_your_team">Pilih pasukan anda :</string>
+
+    <string name="cancel">Batal</string>
+    <string name="profile">Profil</string>
+    <string name="friends">Rakan: %1$s</string>
+    <string name="current_team">Pasukan semasa:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Ralat telah berlaku. Sila cuba lagi nanti.</string>
+    <string name="n_cessite_une_connection_internet">Memerlukan sambungan internet</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Gagal mendapatkan data pengguna.</string>
+    <string name="l_utilisateur_n_existe_pas">Pengguna tidak wujud.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Gagal memadam nama pengguna lama.</string>
+    <string name="chec_du_changement_de_pseudo">Gagal menukar nama pengguna.</string>
+    <string name="pseudo_chang_avec_succ_s">Nama pengguna berjaya ditukar.</string>
+
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Kliek Uitdaging</string>
     <string name="title_dashboard">Loopbaan</string>
     <string name="welcome_message">Welkom by die loopbaanmodus! Nou, aanval en klik op die knoppie 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Marathon 42K klikke</string>
     <string name="search_a_player">Soek na \'n speler</string>
     <string name="select_your_team">Kies jou span :</string>
+
+    <string name="cancel">Kanselleer</string>
+    <string name="profile">Profiel</string>
+    <string name="friends">Vriende : %1$s</string>
+    <string name="current_team">Huidige span :</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Daar het \'n fout opgetree. Probeer asseblief later weer.</string>
+    <string name="n_cessite_une_connection_internet">Benodig \'n internetverbinding</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Kon nie gebruikersdata herstel nie.</string>
+    <string name="l_utilisateur_n_existe_pas">Gebruiker bestaan nie.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Kon nie die ou gebruikersnaam verwyder nie.</string>
+    <string name="chec_du_changement_de_pseudo">Kon nie die gebruikersnaam verander nie.</string>
+    <string name="pseudo_chang_avec_succ_s">Gebruikersnaam suksesvol verander.</string>
+
 </resources>

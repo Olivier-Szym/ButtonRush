@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Sfida al Click</string>
     <string name="title_dashboard">Carriera</string>
     <string name="welcome_message">Benvenuti nella modalità carriera! Ora, attacca e fai clic sul pulsante 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Maratona 42K clic</string>
     <string name="search_a_player">Cerca un giocatore</string>
     <string name="select_your_team">Seleziona la tua squadra :</string>
+
+    <string name="cancel">Annulla</string>
+    <string name="profile">Profilo</string>
+    <string name="friends">Amici: %1$s</string>
+    <string name="current_team">Team attuale:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Si è verificato un errore. Per favore, riprova più tardi.</string>
+    <string name="n_cessite_une_connection_internet">Richiede una connessione a Internet</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Impossibile recuperare i dati dell\'utente.</string>
+    <string name="l_utilisateur_n_existe_pas">L\'utente non esiste.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Impossibile eliminare il vecchio nome utente.</string>
+    <string name="chec_du_changement_de_pseudo">Impossibile cambiare il nome utente.</string>
+    <string name="pseudo_chang_avec_succ_s">Nome utente cambiato con successo.</string>
+
 </resources>

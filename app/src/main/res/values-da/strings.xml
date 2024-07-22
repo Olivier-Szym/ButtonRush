@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Klikudfordring</string>
     <string name="title_dashboard">Karriere</string>
     <string name="welcome_message">Velkommen til karrieretilstand! Nu, angrib og klik på knappen 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Maraton 42K klik</string>
     <string name="search_a_player">Søg efter en spiller</string>
     <string name="select_your_team">Vælg dit hold :</string>
+
+    <string name="cancel">Annuller</string>
+    <string name="profile">Profil</string>
+    <string name="friends">Venner: %1$s</string>
+    <string name="current_team">Nuværende hold:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Der opstod en fejl. Prøv venligst igen senere.</string>
+    <string name="n_cessite_une_connection_internet">Kræver en internetforbindelse</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Fejl ved hentning af brugerdata.</string>
+    <string name="l_utilisateur_n_existe_pas">Brugeren findes ikke.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Fejl ved sletning af det gamle brugernavn.</string>
+    <string name="chec_du_changement_de_pseudo">Fejl ved ændring af brugernavn.</string>
+    <string name="pseudo_chang_avec_succ_s">Brugernavn ændret med succes.</string>
+
 </resources>

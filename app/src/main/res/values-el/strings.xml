@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ButtonRush</string>
     <string name="title_home">Πρόκληση Κλικ</string>
     <string name="title_dashboard">Σταδιοδρομία</string>
     <string name="welcome_message">Καλώς ήρθατε στη λειτουργία καριέρας! Τώρα, επίθεση και κάντε κλικ στο κουμπί 🔴!</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">Μαραθώνιος 42K κλικ</string>
     <string name="search_a_player">Αναζήτηση παίκτη</string>
     <string name="select_your_team">Επιλέξτε την ομάδα σας :</string>
+
+    <string name="cancel">Ακύρωση</string>
+    <string name="profile">Προφίλ</string>
+    <string name="friends">Φίλοι: %1$s</string>
+    <string name="current_team">Τρέχουσα ομάδα:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">Παρουσιάστηκε σφάλμα. Παρακαλώ δοκιμάστε ξανά αργότερα.</string>
+    <string name="n_cessite_une_connection_internet">Απαιτείται σύνδεση στο διαδίκτυο</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Αποτυχία ανάκτησης δεδομένων χρήστη.</string>
+    <string name="l_utilisateur_n_existe_pas">Ο χρήστης δεν υπάρχει.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Αποτυχία διαγραφής του παλιού ονόματος χρήστη.</string>
+    <string name="chec_du_changement_de_pseudo">Αποτυχία αλλαγής ονόματος χρήστη.</string>
+    <string name="pseudo_chang_avec_succ_s">Το όνομα χρήστη άλλαξε επιτυχώς.</string>
+
 </resources>

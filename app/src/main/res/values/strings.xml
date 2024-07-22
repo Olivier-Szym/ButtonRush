@@ -6,7 +6,7 @@
     <string name="k_id" translatable="false">1kclick</string>
     <string name="dix_id" translatable="false">10kclick</string>
     <string name="marath_id" translatable="false">marathon</string>
-    <string name="app_name">ButtonRush</string>
+    <string name="app_name" translatable="false">Button Rush</string>
     <string name="title_home">Click Challenge</string>
     <string name="title_dashboard">Career</string>
     <string name="welcome_message">Welcome to Career Mode !\nNow, let\'s attack and click on the button 🔴!</string>
@@ -66,4 +66,16 @@
     <string name="marathon_42k_click">Marathon 42K clicks</string>
     <string name="search_a_player">Search for a player</string>
     <string name="select_your_team">Select your team :</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="profile">Profile</string>
+    <string name="friends">Friends : %1$s</string>
+    <string name="current_team">Current team :</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">An error occurred. Please try again later.</string>
+    <string name="n_cessite_une_connection_internet">Requires an internet connection</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">Failed to retrieve user data.</string>
+    <string name="l_utilisateur_n_existe_pas">User does not exist.</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">Failed to delete the old username.</string>
+    <string name="chec_du_changement_de_pseudo">Failed to change the username.</string>
+    <string name="pseudo_chang_avec_succ_s">Username changed successfully.</string>
 </resources>

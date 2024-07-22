@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.zimoliv.buttonrush.MainActivity2
@@ -41,6 +42,9 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
 
     private val filteredList = mutableListOf<UserItem>()
     private val copyListAll = mutableListOf<UserItem>()
+
+    private lateinit var database: DatabaseReference
+    private var valueEventListener: ValueEventListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +96,8 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
         recyclerView.adapter = adapter
 
 
-        getUserFirebase()
+//        getUserFirebase()
+        database = FirebaseDatabase.getInstance().reference.child("utilisateurs")
 
         binding.floatingActionButton.setOnClickListener {
             goToUser()
@@ -149,6 +154,19 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
         adapter.notifyDataSetChanged()
     }
 
+    override fun onStart() {
+        super.onStart()
+        getUserFirebase()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Remove listener to prevent memory leaks
+        valueEventListener?.let {
+            database.removeEventListener(it)
+        }
+    }
+
     private fun goToUser() {
         val userToScrollTo = surname
 
@@ -162,9 +180,8 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
     }
 
     private fun getUserFirebase() {
-        val database = FirebaseDatabase.getInstance().reference
-
-        database.child("utilisateurs").addValueEventListener(object : ValueEventListener {
+//        val database = FirebaseDatabase.getInstance().reference
+        valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val leaderboardList = mutableListOf<UserItem>()
                 for (userSnapshot in snapshot.children) {
@@ -181,8 +198,30 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
             override fun onCancelled(error: DatabaseError) {
                 //TODO("Not yet implemented")
             }
+        }
+        valueEventListener?.let {
+            database.addValueEventListener(it)
+        }
 
-        })
+//        database.child("utilisateurs").addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val leaderboardList = mutableListOf<UserItem>()
+//                for (userSnapshot in snapshot.children) {
+//                    val pseudo = userSnapshot.key ?: ""
+//                    val score = userSnapshot.child(idMode).getValue(Int::class.java) ?: 0
+//                    val trending = userSnapshot.child("${idMode}_trending").getValue(Int::class.java) ?: 0
+//                    val country = userSnapshot.child("country").getValue(String::class.java) ?: ""
+//                    leaderboardList.add(UserItem(pseudo, score, trending, country))
+//                }
+//
+//                updateList(leaderboardList)
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                //TODO("Not yet implemented")
+//            }
+//
+//        })
     }
 
     fun updateList(leaderboardList :  MutableList<UserItem>) {
@@ -260,13 +299,19 @@ class ItemFragment : Fragment(), MyItemRecyclerViewAdapter.UserItemListener {
                     adapter.notifyDataSetChanged()
                 } else {
                     favorite = false
-                    getUserFirebase()
+                    uploadList()
+//                    getUserFirebase()
                 }
 
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun uploadList() {
+        listUser.addAll(copyListAll)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onAddFriend(user: Int) {

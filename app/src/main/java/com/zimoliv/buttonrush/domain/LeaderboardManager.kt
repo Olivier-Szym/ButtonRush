@@ -11,7 +11,7 @@ class LeaderboardManager(private val database: DatabaseReference) {
     fun getLeaderboard(category: String, callback: (List<UserItem>) -> Unit) {
         val leaderboardList = mutableListOf<UserItem>()
 
-        database.child("utilisateurs").addListenerForSingleValueEvent(object : ValueEventListener {
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (userSnapshot in dataSnapshot.children) {
                     val pseudo = userSnapshot.key ?: ""

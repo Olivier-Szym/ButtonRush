@@ -13,6 +13,6 @@
 
     <item
         android:id="@+id/navigation_countries_ranked"
-        android:title="🚩🏁🏳️🏴"
+        android:title="@string/ranking_default_title"
         android:icon="@drawable/baseline_outlined_flag_24" />
 </menu>

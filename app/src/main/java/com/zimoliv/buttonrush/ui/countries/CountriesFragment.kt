@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.zimoliv.buttonrush.MainActivity2
@@ -21,6 +23,9 @@ class CountriesFragment : Fragment() {
     private lateinit var adapter: MyItemCountryRecyclerViewAdapter
     private lateinit var recyclerView : RecyclerView
 
+
+    private lateinit var database: DatabaseReference
+    private var valueEventListener: ValueEventListener? = null
     private val listCountries = mutableListOf<CountryData>()
 
     override fun onCreateView(
@@ -31,6 +36,9 @@ class CountriesFragment : Fragment() {
         _binding = FragmentCountriesListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+
         val country = (activity as MainActivity2).getCountry() ?: ""
 
         adapter = MyItemCountryRecyclerViewAdapter(listCountries, requireContext(), country)
@@ -38,14 +46,29 @@ class CountriesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
-        getCountryFirebase()
+        database = FirebaseDatabase.getInstance().reference.child("countries")
+
+//        getCountryFirebase()
 
         return root
     }
 
+    override fun onStart() {
+        super.onStart()
+        getCountryFirebase()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Remove listener to prevent memory leaks
+        valueEventListener?.let {
+            database.removeEventListener(it)
+        }
+    }
+
     private fun getCountryFirebase() {
-        val database = FirebaseDatabase.getInstance().reference
-        database.child("countries").addValueEventListener(object : ValueEventListener {
+//        val database = FirebaseDatabase.getInstance().reference
+        valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val leaderboardList = mutableListOf<CountryData>()
                 for (userSnapshot in snapshot.children) {
@@ -58,7 +81,24 @@ class CountriesFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 //TODO("Not yet implemented")
             }
-        })
+        }
+//        database.child("countries").addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val leaderboardList = mutableListOf<CountryData>()
+//                for (userSnapshot in snapshot.children) {
+//                    val pseudo = userSnapshot.key ?: ""
+//                    val score = userSnapshot.getValue(Int::class.java) ?: 0
+//                    leaderboardList.add(CountryData(pseudo, score))
+//                }
+//                updateList(leaderboardList)
+//            }
+//            override fun onCancelled(error: DatabaseError) {
+//                //TODO("Not yet implemented")
+//            }
+//        })
+        valueEventListener?.let {
+            database.addValueEventListener(it)
+        }
     }
 
     fun updateList(leaderboardList :  MutableList<CountryData>) {

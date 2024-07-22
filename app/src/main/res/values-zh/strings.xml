@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">按钮竞速</string>
     <string name="title_home">点击挑战</string>
     <string name="title_dashboard">职业生涯</string>
     <string name="welcome_message">欢迎来到职业模式！现在，进攻并点击按钮 🔴！</string>
@@ -60,4 +59,17 @@
     <string name="marathon_42k_click">马拉松 42千 次点击</string>
     <string name="search_a_player">搜索玩家</string>
     <string name="select_your_team">选择你的队伍：</string>
+
+    <string name="cancel">取消</string>
+    <string name="profile">个人资料</string>
+    <string name="friends">好友: %1$s</string>
+    <string name="current_team">当前团队:</string>
+    <string name="une_erreur_est_survenue_r_essayer_plus_tard">发生了一个错误。请稍后再试。</string>
+    <string name="n_cessite_une_connection_internet">需要互联网连接</string>
+    <string name="chec_de_la_r_cup_ration_des_donn_es_de_l_utilisateur">无法获取用户数据。</string>
+    <string name="l_utilisateur_n_existe_pas">用户不存在。</string>
+    <string name="chec_de_la_suppression_de_l_ancien_pseudo">无法删除旧的用户名。</string>
+    <string name="chec_du_changement_de_pseudo">无法更改用户名。</string>
+    <string name="pseudo_chang_avec_succ_s">用户名已成功更改。</string>
+
 </resources>

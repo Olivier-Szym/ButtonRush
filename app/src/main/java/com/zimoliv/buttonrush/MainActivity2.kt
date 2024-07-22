@@ -1,10 +1,20 @@
 package com.zimoliv.buttonrush
 
+import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Vibrator
 import android.view.LayoutInflater
+import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +25,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.airbnb.lottie.LottieAnimationView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -34,6 +46,10 @@ class MainActivity2 : AppCompatActivity() {
 
     private var dialog: AlertDialog? = null
 
+    private lateinit var animationView: LottieAnimationView
+
+    private var shouldStopAnimation = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +66,15 @@ class MainActivity2 : AppCompatActivity() {
 
         navView = binding.navView
 
+//        val backgroundScope = CoroutineScope(Dispatchers.IO)
+//        backgroundScope.launch {
+            // Initialize the Google Mobile Ads SDK on a background thread.
+        MobileAds.initialize(this@MainActivity2) {}
+//        }
+
+//        val adRequest = AdRequest.Builder().build()
+//        binding.adView.loadAd(adRequest)
+
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
 
         val appBarConfiguration = AppBarConfiguration(
@@ -60,20 +85,60 @@ class MainActivity2 : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        animationView= binding.animationViewCheckmark
+
+        val number = getSaveNumber()
+        if (number > 500) {
+            if (!ifClickedOnProfile(false)) {
+                val textViewArrow = binding.textViewArrow
+                // Create an ObjectAnimator to move the TextView up and down
+                val animator = ObjectAnimator.ofFloat(textViewArrow, "translationY", -100f, 30f).apply {
+                    duration = 700  // Duration of one up-down cycle
+                    interpolator = LinearInterpolator()  // Smooth linear animation
+                    repeatCount = ObjectAnimator.INFINITE  // Repeat forever
+                    repeatMode = ObjectAnimator.REVERSE  // Reverse the animation to go back up
+                }
+
+                animator.addUpdateListener {
+                    if (shouldStopAnimation) {
+                        animator.cancel()
+                    }
+                }
+                textViewArrow.visibility = View.VISIBLE
+                // Start the animation
+                animator.start()
+            }
+        }
         checkOnlineAccorded()
+    }
+
+    fun stopAnimation() {
+        binding.textViewArrow.visibility = View.GONE
+        shouldStopAnimation = true
+    }
+
+    private fun isConnectedToInternet(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting == true
     }
 
     private fun checkOnlineAccorded() {
         val name = getSaveName()
-        if (name != "User") {
+        if (name != "User" && isConnectedToInternet()) {
             val database = Firebase.database
             val myRef = database.getReference("utilisateurs").child(name)
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         val number = getSaveNumber()
-                        if (number < (dataSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java)?.toInt() ?: 0)) {
-                            setSaveNumber((dataSnapshot.child(getString(R.string.cent_id)).getValue(Int::class.java)?.toInt() ?: 0))
+                        if (number < (dataSnapshot.child(getString(R.string.career_id)).getValue(Int::class.java)?.toInt() ?: 0)) {
+                            setSaveNumber((dataSnapshot.child(getString(R.string.career_id)).getValue(Int::class.java)?.toInt() ?: 0))
+                        } else if (number > (dataSnapshot.child(getString(R.string.career_id)).getValue(Int::class.java)?.toInt() ?: 0)) {
+                            val utilisateurData = HashMap<String, Any>().apply {
+                                put(getString(R.string.career_id) , number)
+                            }
+                            myRef.updateChildren(utilisateurData)
                         }
 
                         val record100 = getRecord100()
@@ -125,7 +190,8 @@ class MainActivity2 : AppCompatActivity() {
                         }
 
                     } else {
-                        // Le nœud n'existe pas
+                        clearLocalData()
+                        restartApp()
                     }
                 }
 
@@ -134,6 +200,20 @@ class MainActivity2 : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    fun clearLocalData() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
+    fun restartApp() {
+        val intent = Intent(this, MainActivity2::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
     }
 
     fun setNavigationEnabled(isEnabled: Boolean) {
@@ -160,19 +240,19 @@ class MainActivity2 : AppCompatActivity() {
     }
     fun setSaveNumber(number: Int) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        number.let { sharedPreferences.edit().putInt("number", it).apply() }
+        number.let { sharedPreferences.edit().putInt("number_release", it).apply() }
     }
     fun getSaveNumber(): Int {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        return sharedPreferences.getInt("number", 0)
+        return sharedPreferences.getInt("number_release", 0)
     }
     fun setCountry(str: String) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        str.let { sharedPreferences.edit().putString("country", it).apply() }
+        str.let { sharedPreferences.edit().putString("country_release", it).apply() }
     }
     fun getCountry() : String? {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("country", "GB")
+        return sharedPreferences.getString("country_release", "GB")
     }
 //    fun lastValueUpdated(int: Int) : Int {
 //        val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
@@ -190,16 +270,22 @@ class MainActivity2 : AppCompatActivity() {
 //    }
     fun getSaveName() : String {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        val name = sharedPreferences.getString("name", "User")
+        val name = sharedPreferences.getString("name_release", "User")
         return name ?: "User"
     }
     fun setSaveName(name: String) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        name.let { sharedPreferences.edit().putString("name", it).apply() }
+        name.let { sharedPreferences.edit().putString("name_release", it).apply() }
+
+        vibratePhone(1000)
+        Handler(Looper.getMainLooper()).postDelayed({
+            vibratePhone(500)
+            animationView.playAnimation()
+        }, 2000)
     }
     fun getSaveFriends() : List<String> {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        val name = sharedPreferences.getString("friend", "")
+        val name = sharedPreferences.getString("friend_release", "")
         if (name != null) {
             return name.split("¤")
         }
@@ -219,31 +305,31 @@ class MainActivity2 : AppCompatActivity() {
                 str = str + "¤" + friend
         }
 
-        str.let { sharedPreferences.edit().putString("friend", it).apply() }
+        str.let { sharedPreferences.edit().putString("friend_release", it).apply() }
     }
     fun getNumberClick(): Int {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        return sharedPreferences.getInt("intclick", -2)
+        return sharedPreferences.getInt("intclick_release", -2)
     }
     fun getGoal(): Int {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        return sharedPreferences.getInt("goalclick", 0)
+        return sharedPreferences.getInt("goalclick_release", 0)
     }
     fun setGoal(int: Int) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        int.let { sharedPreferences.edit().putInt("goalclick", it).apply() }
+        int.let { sharedPreferences.edit().putInt("goalclick_release", it).apply() }
     }
     fun getTime(): Long {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        return sharedPreferences.getLong("longtime", 0)
+        return sharedPreferences.getLong("longtime_release", 0)
     }
     fun setTime(long: Long) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        long.let { sharedPreferences.edit().putLong("longtime", it).apply() }
+        long.let { sharedPreferences.edit().putLong("longtime_release", it).apply() }
     }
     fun setCounterClick(int: Int) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
-        int.let { sharedPreferences.edit().putInt("intclick", it).apply() }
+        int.let { sharedPreferences.edit().putInt("intclick_release", it).apply() }
     }
     fun showPauseDialog(time: String, clicks : String,listener: PauseDialogListener) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_pause, null)
@@ -331,6 +417,16 @@ class MainActivity2 : AppCompatActivity() {
     fun setRecordMarathon(long: Long) {
         setRecord(long, "42k")
     }
+
+    fun ifClickedOnProfile(boll: Boolean) : Boolean {
+        val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
+        if (boll) {
+            true.let { sharedPreferences.edit().putBoolean("clickedProfile", true).apply() }
+            return true
+        } else {
+            return sharedPreferences.getBoolean("clickedProfile", false)
+        }
+    }
     private fun getRecordMarathon() : Long {
         return getRecord("42k")
     }
@@ -341,5 +437,10 @@ class MainActivity2 : AppCompatActivity() {
     private fun setRecord(long: Long, id: String) {
         val sharedPreferences = this.getSharedPreferences("app.buttonrush", Context.MODE_PRIVATE)
         long.let { sharedPreferences.edit().putLong(id, it).apply() }
+    }
+
+    private fun vibratePhone(long: Long) {
+        val vibrator = this.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(long)
     }
 }

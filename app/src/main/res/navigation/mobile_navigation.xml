@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_navigation_home_to_itemFragment"
             app:destination="@id/itemFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -22,11 +25,15 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_itemFragment"
             app:destination="@id/itemFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_countries_ranked"
         android:name="com.zimoliv.buttonrush.ui.countries.CountriesFragment"
+        android:label="@string/ranking_default_title"
         tools:layout="@layout/fragment_countries_list" >
     </fragment>
 
@@ -34,6 +41,13 @@
         android:id="@+id/itemFragment"
         android:name="com.zimoliv.buttonrush.ui.ranked.ItemFragment"
         android:label="ItemFragment"
-        tools:layout="@layout/fragment_item_list"/>
+        tools:layout="@layout/fragment_item_list">
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.zimoliv.buttonrush.ui.settings.SettingsFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>
